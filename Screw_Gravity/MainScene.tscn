@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Materials/icon.png" type="Texture" id=1]
 [ext_resource path="res://Materials/floor_Low.OBJ" type="ArrayMesh" id=2]
+[ext_resource path="res://Materials/particlePack_1.1/PNG (Transparent)/smoke_02.png" type="Texture" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "TextDisplay"
@@ -19,11 +20,30 @@ tracks/0/keys = {
 "values": [ 0.0, 1.0 ]
 }
 
-[node name="Node" type="Spatial"]
+[sub_resource type="Gradient" id=2]
+colors = PoolColorArray( 0, 0.458824, 1, 1, 0.14436, 0.450684, 0.290043, 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-mesh = ExtResource( 2 )
-material/0 = null
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 0.5
+scale = 23.99
+color_ramp = SubResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=5]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="QuadMesh" id=6]
+material = SubResource( 5 )
+
+[node name="Node" type="Spatial"]
 
 [node name="Dialog_Box" type="Control" parent="."]
 anchor_right = 1.0
@@ -72,3 +92,19 @@ valign = 1
 
 [node name="Body_AnimationPlayer" type="AnimationPlayer" parent="Dialog_Box/Body_NinePatchRect/Body_MarginContainer/Body_Label"]
 anims/TextDisplay = SubResource( 1 )
+
+[node name="Particles" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, -5 )
+amount = 2
+lifetime = 35.0
+explosiveness = 0.2
+local_coords = false
+process_material = SubResource( 4 )
+draw_pass_1 = SubResource( 6 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = ExtResource( 2 )
+material/0 = null
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1 )
