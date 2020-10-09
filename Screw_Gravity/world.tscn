@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/cursor.png" type="Texture" id=1]
+[ext_resource path="res://assets/maujoe.camera_control/scripts/camera_control.gd" type="Script" id=2]
+
+[sub_resource type="SphereMesh" id=1]
+
+[sub_resource type="CylinderMesh" id=2]
+
+[node name="world" type="Spatial"]
+
+[node name="island" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="island"]
+transform = Transform( 10, 0, 0, 0, 1, 0, 0, 0, 10, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.23802, 3.80136 )
+current = true
+fov = 90.0
+script = ExtResource( 2 )
+sensitivity = 0.2
+yaw_limit = 90
+pitch_limit = 90
+
+[node name="Sprite3D" type="Sprite3D" parent="Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.858916 )
+pixel_size = 0.005
+texture = ExtResource( 1 )
+
+[node name="Spatial" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Spatial"]
+transform = Transform( 1, 0, 0, 0, 2.5, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = null
