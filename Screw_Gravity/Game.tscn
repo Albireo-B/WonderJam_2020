@@ -97,6 +97,7 @@ texture = ExtResource( 5 )
 [node name="RayCast" type="RayCast" parent="Camera"]
 enabled = true
 cast_to = Vector3( 0, 0, -1000 )
+collision_mask = 2147483649
 
 [node name="Environment" type="Spatial" parent="."]
 
