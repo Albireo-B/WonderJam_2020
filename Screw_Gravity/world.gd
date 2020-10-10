@@ -16,15 +16,28 @@ func _ready():
 		
 		var newalpha = alpha
 		newalpha[0] = alpha[0]+i
-		var mesh = load("res://assets/alphabet/"+newalpha.get_string_from_ascii()+".obj")
-		letter.get_node("MeshInstance").set_mesh(mesh)
+		letter.set_letter(newalpha.get_string_from_ascii())
 		
 		get_node("/root/world/plan").add_child(letter)
 		
-
+	newletter()
 	
 
+func newletter():
+	var letterScene = load("res://letter.tscn")
+	var alpha = "a".to_ascii()
+	alpha[0] += randi()%26+1
+	
+	var letter = letterScene.instance()
+	letter.speed = 0
+	letter.set_letter(alpha.get_string_from_ascii())
+	
+	get_node("/root/world/placeholder").add_child(letter)
 
+	var coloredMaterial = SpatialMaterial.new()
+	coloredMaterial.albedo_color = Color.red
+
+	letter.get_node("MeshInstance").set_material_override(coloredMaterial)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
