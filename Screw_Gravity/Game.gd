@@ -26,7 +26,7 @@ func _ready():
 	var alpha = "a".to_ascii()
 	for i in range(0,26):
 		var letter = letterScene.instance()
-		letter.speed = 2
+		letter.speed = 1
 		var newalpha = alpha
 		newalpha[0] = alpha[0]+i
 		var mesh = load("res://assets/alphabet/"+newalpha.get_string_from_ascii()+".obj")
@@ -62,9 +62,13 @@ func switchMode():
 	if inLetterGame:
 		switchCollisions("Bodies",false)
 		switchCollisions("Letters",true)
+		for L in get_node("Zone_Lettres/Plan").get_children():
+			L.visible = true
 	else:
 		switchCollisions("Bodies",true)
-		switchCollisions("Letters",false)	
+		switchCollisions("Letters",false)
+		for L in get_node("Zone_Lettres/Plan").get_children():
+			L.visible = false
 
 func switchCollisions(objectsType,enabled):
 	if objectsType == "Bodies":
