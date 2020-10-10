@@ -1,10 +1,14 @@
 extends Spatial
 
 
+onready var transitionScene = get_node("SceneTransitionRect")
 onready var tween = get_node("Movement_Tween")
 onready var cameraRaycast = get_node("Camera/RayCast")
 onready var dialogBox = get_node("Dialog_Box")
 onready var letterScene = preload("res://letter.tscn")
+#names to change
+onready var islandIntermediate = preload("res://IslandDestroy.tscn")
+onready var islandComplete = preload("res://IslandDestroy.tscn")
 
 
 var coloredMaterial = SpatialMaterial.new()
@@ -13,9 +17,12 @@ var activatedLetterList = Array()
 var selectedLetter = null
 var selectedbody = null
 var inLetterGame = true
+var currentIslandSceneIndex = 1
+var currentIslandNode
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	currentIslandNode = get_node("Environment")
 	switchMode()
 	var alpha = "a".to_ascii()
 	for i in range(0,26):
@@ -81,6 +88,8 @@ func _input(event):
 		if event.is_action_pressed("ui_accept"):
 			inLetterGame = !inLetterGame
 			switchMode()
+		elif event.is_action_pressed("ui_cancel"):
+			changeSceneOrEndGame()
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if inLetterGame:
@@ -101,3 +110,28 @@ func moveLetter(letter):
 		rotationNeeded,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		tween.start()
 		xSpaceLetters+=0.7
+		
+func changeSceneOrEndGame():
+		match currentIslandSceneIndex:
+			1:
+				fadeInAndIncrementScene()
+				currentIslandNode.queue_free()
+				var newInstance = islandIntermediate.instance()
+				currentIslandNode = newInstance
+				get_tree().get_root().get_node("RootNode").add_child(newInstance)
+			2:
+				fadeInAndIncrementScene()
+				currentIslandNode.queue_free()
+				var newInstance = islandComplete.instance()
+				currentIslandNode = newInstance
+				get_tree().get_root().get_node("RootNode").add_child(newInstance)
+			3:
+				currentIslandNode.queue_free()
+				endGame()
+
+func fadeInAndIncrementScene():
+	transitionScene.get_node("AnimationPlayer").play("Fade")
+	currentIslandSceneIndex+=1
+	
+func endGame():
+	get_tree().quit()
