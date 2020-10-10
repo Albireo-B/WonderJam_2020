@@ -9,6 +9,8 @@ onready var letterScene = preload("res://assets/Scenes/letter.tscn")
 onready var islandIntermediate = preload("res://assets/Scenes/IslandIntermediate.tscn")
 onready var islandComplete = preload("res://assets/Scenes/IslandComplete.tscn")
 
+const CAM_POS = Vector3(0,4,4.45)
+const CAM_ROT = Vector3(-10,0,0)
 
 var coloredMaterial = SpatialMaterial.new()
 var xSpaceLetters = -3
@@ -48,7 +50,7 @@ func _process(delta):
 		else :
 			clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(null)
 	else:
-		if cameraRaycast.is_colliding():
+		if cameraRaycast.is_colliding() and !dialogBox.visible:
 			selectedbody = cameraRaycast.get_collider()
 			selectedbody.get_child(0).get_node("Outline").visible = true
 		else :
@@ -64,18 +66,29 @@ func _input(event):
 			if inLetterGame:
 				if cameraRaycast.is_colliding() && !cameraRaycast.get_collider() in activatedLetterList :
 					activatedLetterList.append(cameraRaycast.get_collider())
-					moveLetter(cameraRaycast.get_collider())
+					moveObject(cameraRaycast.get_collider(),Vector3(xSpaceLetters,0,0),Vector3(-30,0,0))
 			else :
-				if cameraRaycast.is_colliding():
-					if dialogBox.visible:
-						inLetterGame = !inLetterGame
-						dialogBox.visible = false
-						switchMode()
-					else:
-						displayAccordingMessage()
-						dialogBox.visible = true
-						dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label/Body_AnimationPlayer").play("TextDisplay")
+				if !dialogBox.visible:
+					if cameraRaycast.is_colliding():
+						zoomInAndDialog(cameraRaycast.get_collider())
+				else:
+					zoomOutAndDialog()
+						
+func zoomInAndDialog(targetObject):
+	get_node("Camera").set_enabled(false)
+	get_node("Camera/Sprite3D").visible = false
+	get_node("Camera/RayCast").enabled = false
+	if targetObject.get_name() == "Human_one":
+		moveObject(get_node("Camera"),Vector3(-3.35,3,-1),Vector3(0,0,0))
+	else:
+		moveObject(get_node("Camera"),Vector3(2.128,3.105,-1.937),Vector3(10,-90,0))
 
+func zoomOutAndDialog():
+	moveObject(get_node("Camera"),CAM_POS,CAM_ROT)
+	get_node("Camera/Sprite3D").visible = true
+	get_node("Camera").set_enabled(true)
+	get_node("Camera/RayCast").enabled = true
+	
 func displayAccordingMessage():
 	match currentIslandSceneIndex:
 		1:
@@ -122,17 +135,22 @@ func clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(letter):
 		if L != letter and !L in activatedLetterList:
 			L.get_node("MeshInstance").set_material_override(coloredMaterial)
 	
-func moveLetter(letter):
-	if letter is KinematicBody:
-		letter.speed = 0
-		var targetLocation = Vector3(xSpaceLetters,0,0)
-		var rotationNeeded = Vector3(-30,0,0)
-		tween.interpolate_property(letter,"translation",letter.translation,
+func moveObject(object,targetLocation,rotationNeeded):
+	if object is KinematicBody:
+		object.speed = 0
+		tween.interpolate_property(object,"translation",object.translation,
 		targetLocation,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
-		tween.interpolate_property(letter,"rotation_degrees",letter.rotation_degrees,
+		tween.interpolate_property(object,"rotation_degrees",object.rotation_degrees,
 		rotationNeeded,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		tween.start()
 		xSpaceLetters+=0.7
+	elif object is Camera:
+		tween.interpolate_property(object,"translation",object.translation,
+		targetLocation,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		tween.interpolate_property(object,"rotation_degrees",object.rotation_degrees,
+		rotationNeeded,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		tween.start()
+		
 		
 func changeSceneOrEndGame():
 		match currentIslandSceneIndex:
@@ -155,3 +173,14 @@ func fadeIn_IncrScene_ChangeEnv(newEnv):
 	
 func endGame():
 	get_tree().quit()
+
+func _on_Movement_Tween_tween_all_completed():
+	if !inLetterGame:
+		if !dialogBox.visible:
+			displayAccordingMessage()	
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label/Body_AnimationPlayer").play("TextDisplay")
+			dialogBox.visible = true
+		else:
+			dialogBox.visible = false
+			inLetterGame = !inLetterGame
+			switchMode()
