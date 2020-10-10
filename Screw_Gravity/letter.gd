@@ -5,6 +5,8 @@ extends KinematicBody
 export var speed = 1
 onready var originpos = global_transform.origin
 onready var randtarget = originpos
+#letter MUST BE SET WHIT THE SETTER (using setter getter is better)
+var letter;
 
 
 # Called when the node enters the scene tree for the first time.
@@ -21,6 +23,10 @@ func _process(delta):
 		move_and_slide(direction.normalized()*speed)
 	
 
-
-
+func set_letter(letter_): 
+	letter = letter_
+	var mesh = load("res://assets/alphabet/"+letter_+".obj")
+	get_node("MeshInstance").set_mesh(mesh)
 	
+func get_letter(): 
+	return letter
