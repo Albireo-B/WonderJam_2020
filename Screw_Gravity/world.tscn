@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://Materials/textures/cursor.png" type="Texture" id=1]
-[ext_resource path="res://assets/maujoe.camera_control/scripts/camera_control.gd" type="Script" id=2]
+[ext_resource path="res://Movement_Tween.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Camera.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Label.gd" type="Script" id=3]
 [ext_resource path="res://world.gd" type="Script" id=4]
+[ext_resource path="res://score.gd" type="Script" id=5]
 
 [sub_resource type="SphereMesh" id=1]
 
@@ -21,6 +22,47 @@ albedo_color = Color( 0.607843, 0.607843, 0.607843, 0 )
 [node name="world" type="Spatial"]
 script = ExtResource( 4 )
 
+[node name="ui" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="ui"]
+margin_left = 18.9797
+margin_top = 18.4185
+margin_right = 218.98
+margin_bottom = 48.4185
+text = "Hello world"
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scoreLabel" type="Label" parent="ui"]
+margin_left = 21.3268
+margin_top = 71.8376
+margin_right = 68.3268
+margin_bottom = 85.8376
+text = "Score : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="score" type="Label" parent="ui"]
+anchor_top = 0.0140308
+anchor_bottom = 0.0140308
+margin_left = 89.7969
+margin_top = 71.8376
+margin_right = 129.797
+margin_bottom = 85.8376
+text = "0"
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="island" type="Spatial" parent="."]
 transform = Transform( 20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0 )
 
@@ -28,31 +70,6 @@ transform = Transform( 20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000884008, -4.76837e-07, 0.000376081 )
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
-
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, 5.56174 )
-current = true
-script = ExtResource( 2 )
-sensitivity = 0.2
-yaw_limit = 90
-pitch_limit = 90
-
-[node name="Sprite3D" type="Sprite3D" parent="Camera"]
-transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, -0.858916 )
-modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
-pixel_size = 0.005
-texture = ExtResource( 1 )
-
-[node name="Label" type="Label" parent="Camera"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 40.0
-margin_bottom = 14.0
-text = "Hello world"
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="artefact" type="Spatial" parent="."]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2.84684, 0 )
@@ -70,3 +87,8 @@ material/0 = SubResource( 5 )
 transform = Transform( 1, 0, 0, 0, 0.944239, 0.329262, 0, -0.329262, 0.944239, 0, 6.39797, 2.71615 )
 mesh = SubResource( 4 )
 material/0 = SubResource( 5 )
+
+[node name="Camera" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 8.47933, 6.87819 )
+
+[node name="Movement_Tween" parent="." instance=ExtResource( 1 )]

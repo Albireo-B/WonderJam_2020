@@ -1,8 +1,8 @@
 extends Label
 
 
-# Declare member variables here.
-export var time = 30.0
+# Declare member variables here. Examples:
+export var score = 0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -14,9 +14,5 @@ func _ready():
 func _process(delta):
 	var worldNode = get_node("/root/world")
 	if worldNode.playtime:
-		if time <= 0 :
-			time = 0
-			worldNode.playtime = false
-		else:
-			time -= delta
-	text = str(time)
+		score += 1
+	text = str(score)
