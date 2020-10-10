@@ -6,7 +6,6 @@ export var speed = 1
 onready var originpos = global_transform.origin
 onready var randtarget = originpos
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()

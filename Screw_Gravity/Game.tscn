@@ -1,0 +1,142 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/maujoe.camera_control/scripts/camera_control.gd" type="Script" id=1]
+[ext_resource path="res://Materials/island_destroy_low.OBJ" type="ArrayMesh" id=2]
+[ext_resource path="res://Game.gd" type="Script" id=3]
+[ext_resource path="res://Materials/textures/icon.png" type="Texture" id=4]
+[ext_resource path="res://Materials/textures/cursor.png" type="Texture" id=5]
+[ext_resource path="res://Materials/statue_low_destroy.OBJ" type="ArrayMesh" id=6]
+[ext_resource path="res://Materials/human_one_low.OBJ" type="ArrayMesh" id=7]
+
+[sub_resource type="Animation" id=1]
+resource_name = "TextDisplay"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:percent_visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+
+[sub_resource type="QuadMesh" id=2]
+
+[sub_resource type="SpatialMaterial" id=3]
+flags_transparent = true
+albedo_color = Color( 1, 1, 1, 0 )
+
+[node name="RootNode" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="Dialog_Box" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Body_NinePatchRect" type="NinePatchRect" parent="Dialog_Box"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -350.0
+margin_top = -200.0
+margin_right = 350.0
+margin_bottom = -50.0
+texture = ExtResource( 4 )
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Body_MarginContainer" type="MarginContainer" parent="Dialog_Box/Body_NinePatchRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Body_Label" type="Label" parent="Dialog_Box/Body_NinePatchRect/Body_MarginContainer"]
+margin_right = 660.0
+margin_bottom = 110.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "This is a dialog box with a text in it . wow. amazing."
+align = 1
+valign = 1
+
+[node name="Body_AnimationPlayer" type="AnimationPlayer" parent="Dialog_Box/Body_NinePatchRect/Body_MarginContainer/Body_Label"]
+anims/TextDisplay = SubResource( 1 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1, 5 )
+current = true
+script = ExtResource( 1 )
+sensitivity = 0.2
+yaw_limit = 90
+pitch_limit = 90
+
+[node name="Sprite3D" type="Sprite3D" parent="Camera"]
+transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, -1 )
+texture = ExtResource( 5 )
+
+[node name="RayCast" type="RayCast" parent="Camera"]
+enabled = true
+cast_to = Vector3( 0, 0, -1000 )
+
+[node name="Environment" type="Spatial" parent="."]
+
+[node name="Island" type="MeshInstance" parent="Environment"]
+mesh = ExtResource( 2 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+material/6 = null
+material/7 = null
+material/8 = null
+
+[node name="Statue" type="MeshInstance" parent="Environment"]
+mesh = ExtResource( 6 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+material/6 = null
+material/7 = null
+material/8 = null
+material/9 = null
+material/10 = null
+
+[node name="Dead_Bodies" type="Spatial" parent="Environment"]
+
+[node name="Dead_body_1" type="MeshInstance" parent="Environment/Dead_Bodies"]
+mesh = ExtResource( 7 )
+material/0 = null
+
+[node name="Zone_Lettres" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+
+[node name="Plan" type="MeshInstance" parent="Zone_Lettres"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="Movement_Tween" type="Tween" parent="."]
