@@ -40,6 +40,7 @@ func _process(delta):
 		if cameraRaycast.is_colliding():
 			selectedLetter = cameraRaycast.get_collider()
 			coloredMaterial.albedo_color = Color.red
+			print(selectedLetter.get_name())
 			selectedLetter.get_node("MeshInstance").set_material_override(coloredMaterial)
 			clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(selectedLetter)
 		else :

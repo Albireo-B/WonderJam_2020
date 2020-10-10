@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://assets/maujoe.camera_control/scripts/camera_control.gd" type="Script" id=1]
 [ext_resource path="res://IslandDestroy.tscn" type="PackedScene" id=2]
@@ -6,6 +6,26 @@
 [ext_resource path="res://Materials/textures/icon.png" type="Texture" id=4]
 [ext_resource path="res://Materials/textures/cursor.png" type="Texture" id=5]
 [ext_resource path="res://SceneTransitionRect.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Materials/skybox.obj" type="ArrayMesh" id=7]
+[ext_resource path="res://Materials/textures/skybox/Material.001_Metallic.png" type="Texture" id=8]
+[ext_resource path="res://Materials/textures/skybox/Material.001_Normal_OpenGL.png" type="Texture" id=9]
+[ext_resource path="res://Materials/textures/skybox/Material.001_Base_Color.png" type="Texture" id=10]
+[ext_resource path="res://Materials/textures/skybox/Material.001_Emissive.png" type="Texture" id=11]
+[ext_resource path="res://Materials/textures/skybox/Material.001_Roughness.png" type="Texture" id=12]
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_texture = ExtResource( 10 )
+metallic_texture = ExtResource( 8 )
+roughness_texture = ExtResource( 12 )
+emission_enabled = true
+emission = Color( 0, 0, 0, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+emission_texture = ExtResource( 11 )
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 9 )
 
 [sub_resource type="Animation" id=1]
 resource_name = "TextDisplay"
@@ -31,6 +51,10 @@ albedo_color = Color( 1, 1, 1, 0 )
 
 [node name="RootNode" type="Spatial"]
 script = ExtResource( 3 )
+
+[node name="SkyBox" type="MeshInstance" parent="."]
+mesh = ExtResource( 7 )
+material/0 = SubResource( 4 )
 
 [node name="SceneTransitionRect" parent="." instance=ExtResource( 6 )]
 
