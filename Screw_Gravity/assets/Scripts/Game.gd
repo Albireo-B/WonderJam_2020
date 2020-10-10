@@ -18,6 +18,9 @@ var selectedbody = null
 var inLetterGame = false
 var currentIslandSceneIndex = 1
 var currentIslandNode
+var level1DialogArrays = ["What happened here?","I can't remember anything","Poor guys"]
+var level2DialogArrays = ["Hi there","General kenobi","Bip","Boup","tryndamere est passé par la"]
+var level3DialogArrays = ["Hi there","General kenobi","Bip","Boup","tryndamere est passé par la"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,7 +42,7 @@ func _process(delta):
 		if cameraRaycast.is_colliding():
 			selectedLetter = cameraRaycast.get_collider()
 			coloredMaterial.albedo_color = Color.red
-			if selectedLetter and selectedLetter.get_node("MeshInstance"):
+			if selectedLetter is KinematicBody:
 				selectedLetter.get_node("MeshInstance").set_material_override(coloredMaterial)
 			clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(selectedLetter)
 		else :
@@ -51,6 +54,37 @@ func _process(delta):
 		else :
 			clearBodiesOutline()
 
+
+func _input(event):
+	if event is InputEvent:
+		if event.is_action_pressed("ui_cancel"):
+			changeSceneOrEndGame()
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if inLetterGame:
+				if cameraRaycast.is_colliding() && !cameraRaycast.get_collider() in activatedLetterList :
+					activatedLetterList.append(cameraRaycast.get_collider())
+					moveLetter(cameraRaycast.get_collider())
+			else :
+				if cameraRaycast.is_colliding():
+					if dialogBox.visible:
+						inLetterGame = !inLetterGame
+						dialogBox.visible = false
+						switchMode()
+					else:
+						displayAccordingMessage()
+						dialogBox.visible = true
+						dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label/Body_AnimationPlayer").play("TextDisplay")
+
+func displayAccordingMessage():
+	match currentIslandSceneIndex:
+		1:
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").text = level1DialogArrays[randi()%level1DialogArrays.size()]
+		2:
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").text = level2DialogArrays[randi()%level2DialogArrays.size()]
+		3:
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").text = level2DialogArrays[randi()%level2DialogArrays.size()]
+			
 func clearBodiesOutline():
 	if selectedbody:
 		selectedbody.get_child(0).get_node("Outline").visible = false
@@ -88,23 +122,6 @@ func clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(letter):
 		if L != letter and !L in activatedLetterList:
 			L.get_node("MeshInstance").set_material_override(coloredMaterial)
 	
-func _input(event):
-	if event is InputEvent:
-		if event.is_action_pressed("ui_accept"):
-			inLetterGame = !inLetterGame
-			switchMode()
-		elif event.is_action_pressed("ui_cancel"):
-			changeSceneOrEndGame()
-	if event is InputEventMouseButton:
-		if event.pressed:
-			if inLetterGame:
-				if cameraRaycast.is_colliding() && !cameraRaycast.get_collider() in activatedLetterList :
-					activatedLetterList.append(cameraRaycast.get_collider())
-					moveLetter(cameraRaycast.get_collider())
-			else :
-				if cameraRaycast.is_colliding():
-					dialogBox.visible = !dialogBox.visible
-				
 func moveLetter(letter):
 	if letter is KinematicBody:
 		letter.speed = 0
@@ -124,11 +141,9 @@ func changeSceneOrEndGame():
 			2:
 				fadeIn_IncrScene_ChangeEnv(islandComplete)
 			3:
-				currentIslandNode.queue_free()
 				endGame()
 
 func fadeIn_IncrScene_ChangeEnv(newEnv):
-	
 	transitionScene.get_node("AnimationPlayer").play("Fade_in")
 	yield(transitionScene.get_node("AnimationPlayer"), "animation_finished")
 	currentIslandNode.queue_free()
