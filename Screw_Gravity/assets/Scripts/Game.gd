@@ -24,12 +24,15 @@ var wordList = [
 
 var selectedLetter = null
 var selectedbody = null
-var inLetterGame = true
+var inLetterGame = false
 var currentIslandSceneIndex = 1
 var currentIslandNode
 var sentence = ""
 var currentNode
 var spacing = 0.25
+var level1DialogArrays = ["What happened here?","I can't remember anything","Poor guys"]
+var level2DialogArrays = ["Hi there","General kenobi","Bip","Boup","tryndamere est passé par la"]
+var level3DialogArrays = ["Hi there","General kenobi","Bip","Boup","tryndamere est passé par la"]
 
 func selectAlpha(obj, selected):
 	obj.get_node("MeshInstance").get_node("outline").visible = selected
@@ -37,7 +40,6 @@ func selectAlpha(obj, selected):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	currentIslandNode = get_node("Environment")
-	switchMode()
 	var alpha = "a".to_ascii()
 	for i in range(0,26):
 		var letter = letterScene.instance()
@@ -46,6 +48,7 @@ func _ready():
 		newalpha[0] = alpha[0]+i
 		letter.set_letter(newalpha.get_string_from_ascii())
 		get_node("/root/RootNode/Zone_Lettres/Plan").add_child(letter) 
+	switchMode()
 		
 	start("start")
 
@@ -89,7 +92,6 @@ func _process(delta):
 		if cameraRaycast.is_colliding():
 			selectedLetter = cameraRaycast.get_collider()
 			if  inplan(selectedLetter):
-				if selectedLetter and selectedLetter.get_node("MeshInstance"):
 					selectAlpha(selectedLetter,true)
 			clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(selectedLetter)
 		else :
@@ -101,24 +103,34 @@ func _process(delta):
 		else :
 			clearBodiesOutline()
 
+
+func displayAccordingMessage():
+	match currentIslandSceneIndex:
+		1:
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").text = level1DialogArrays[randi()%level1DialogArrays.size()]
+		2:
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").text = level2DialogArrays[randi()%level2DialogArrays.size()]
+		3:
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").text = level2DialogArrays[randi()%level2DialogArrays.size()]
+			
 func clearBodiesOutline():
 	if selectedbody:
 		selectedbody.get_child(0).get_node("Outline").visible = false
-	
+		
 #deactivate collision mesh to allow the raycast to find the letter and inversely
 func switchMode():
 	clearBodiesOutline()
 	clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(null)
 	if inLetterGame:
 		switchCollisions("Bodies",false)
-		switchCollisions("Letters",true)
 		for L in get_node("Zone_Lettres/Plan").get_children():
 			L.visible = true
+		switchCollisions("Letters",true)
 	else:
 		switchCollisions("Bodies",true)
-		switchCollisions("Letters",false)
 		for L in get_node("Zone_Lettres/Plan").get_children():
 			L.visible = false
+		switchCollisions("Letters",false)
 
 func switchCollisions(objectsType,enabled):
 	if objectsType == "Bodies":
@@ -128,6 +140,7 @@ func switchCollisions(objectsType,enabled):
 	else :
 		for N in get_node("Zone_Lettres/Plan").get_children():
 			N.get_node("CollisionShape").disabled = !enabled
+			
 
 
 func clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(letter):
@@ -141,6 +154,7 @@ func inplan(obj):
 func istheletter(obj):
 	return obj.get_letter() == currentNode.get_letter()
 	
+
 func _input(event):
 	if event is InputEvent:
 		if event.is_action_pressed("ui_accept"):
@@ -160,7 +174,15 @@ func _input(event):
 						start(wordList[randi()%wordList.size()])
 			else :
 				if cameraRaycast.is_colliding():
-					dialogBox.visible = !dialogBox.visible
+					if dialogBox.visible:
+						inLetterGame = !inLetterGame
+						dialogBox.visible = false
+						switchMode()
+					else:
+						displayAccordingMessage()
+						dialogBox.visible = true
+						dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label/Body_AnimationPlayer").play("TextDisplay")
+
 				
 func moveLetter(letter):
 	if letter is KinematicBody:
@@ -185,11 +207,9 @@ func changeSceneOrEndGame():
 			2:
 				fadeIn_IncrScene_ChangeEnv(islandComplete)
 			3:
-				currentIslandNode.queue_free()
 				endGame()
 
 func fadeIn_IncrScene_ChangeEnv(newEnv):
-	
 	transitionScene.get_node("AnimationPlayer").play("Fade_in")
 	yield(transitionScene.get_node("AnimationPlayer"), "animation_finished")
 	currentIslandNode.queue_free()
