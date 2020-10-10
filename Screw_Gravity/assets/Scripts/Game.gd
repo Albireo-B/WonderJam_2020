@@ -15,14 +15,13 @@ var xSpaceLetters = -3
 var activatedLetterList = Array()
 var selectedLetter = null
 var selectedbody = null
-var inLetterGame = true
+var inLetterGame = false
 var currentIslandSceneIndex = 1
 var currentIslandNode
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	currentIslandNode = get_node("Environment")
-	switchMode()
 	var alpha = "a".to_ascii()
 	for i in range(0,26):
 		var letter = letterScene.instance()
@@ -32,6 +31,7 @@ func _ready():
 		var mesh = load("res://Materials/alphabet/"+newalpha.get_string_from_ascii()+".obj")
 		letter.get_node("MeshInstance").set_mesh(mesh)
 		get_node("/root/RootNode/Zone_Lettres/Plan").add_child(letter) 
+	switchMode()
 
 
 func _process(delta):
@@ -54,21 +54,21 @@ func _process(delta):
 func clearBodiesOutline():
 	if selectedbody:
 		selectedbody.get_child(0).get_node("Outline").visible = false
-	
+		
 #deactivate collision mesh to allow the raycast to find the letter and inversely
 func switchMode():
 	clearBodiesOutline()
 	clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(null)
 	if inLetterGame:
 		switchCollisions("Bodies",false)
-		switchCollisions("Letters",true)
 		for L in get_node("Zone_Lettres/Plan").get_children():
 			L.visible = true
+		switchCollisions("Letters",true)
 	else:
 		switchCollisions("Bodies",true)
-		switchCollisions("Letters",false)
 		for L in get_node("Zone_Lettres/Plan").get_children():
 			L.visible = false
+		switchCollisions("Letters",false)
 
 func switchCollisions(objectsType,enabled):
 	if objectsType == "Bodies":
@@ -78,6 +78,7 @@ func switchCollisions(objectsType,enabled):
 	else :
 		for N in get_node("Zone_Lettres/Plan").get_children():
 			N.get_node("CollisionShape").disabled = !enabled
+			
 
 
 func clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(letter):
