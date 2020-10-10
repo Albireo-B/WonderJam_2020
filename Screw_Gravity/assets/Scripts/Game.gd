@@ -8,16 +8,31 @@ onready var dialogBox = get_node("Dialog_Box")
 onready var letterScene = preload("res://assets/Scenes/letter.tscn")
 onready var islandIntermediate = preload("res://assets/Scenes/IslandIntermediate.tscn")
 onready var islandComplete = preload("res://assets/Scenes/IslandComplete.tscn")
+onready var placeholderplan = get_node("/root/RootNode/placeholder/Plan")
 
+var wordList = [
+	"it was" , "not meant" , "that we" , "should voyage" , "this far",
+"ultimate horror" , "often paralyses" , "memory in" , "a merciful way",
+"the world is" , "indeed comic" ,  "but the" , "joke is" , "on mankind",
+"pleasure to me" , "is wonder",
+"changeless thing" , "that lurks"  , "behind" , "the veil"  , "of reality",
+"unless they happen" , "to be insane",
+"and with" , "strange aeons" , "even death" , "may die",
+"formless" , "infinite" , "unchanging" , "and unchangeable" , "void",
+"where they" , "roll in" , "their horror" , "unheeded"
+]
 
-var coloredMaterial = SpatialMaterial.new()
-var xSpaceLetters = -3
-var activatedLetterList = Array()
 var selectedLetter = null
 var selectedbody = null
 var inLetterGame = true
 var currentIslandSceneIndex = 1
 var currentIslandNode
+var sentence = ""
+var currentNode
+var spacing = 0.25
+
+func selectAlpha(obj, selected):
+	obj.get_node("MeshInstance").get_node("outline").visible = selected
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,18 +44,53 @@ func _ready():
 		letter.speed = 1
 		var newalpha = alpha
 		newalpha[0] = alpha[0]+i
-		var mesh = load("res://Materials/alphabet/"+newalpha.get_string_from_ascii()+".obj")
-		letter.get_node("MeshInstance").set_mesh(mesh)
+		letter.set_letter(newalpha.get_string_from_ascii())
 		get_node("/root/RootNode/Zone_Lettres/Plan").add_child(letter) 
+		
+	start("start")
+
+func start(sentence_):
+	for child in placeholderplan.get_children():
+		child.queue_free()
+	for child in get_node("/root/RootNode/answer").get_children():
+		child.queue_free()
+	
+	sentence = sentence_
+	print(sentence)
+	var iterator = 0
+	for letter in sentence:
+		if letter != " ":
+			var letterNode = letterScene.instance()
+			letterNode.speed = 0
+			letterNode.set_letter(letter)
+			placeholderplan.add_child(letterNode)
+			letterNode.translate(Vector3((-sentence.length()*spacing)/2+iterator * spacing,0,0))
+			letterNode.visible = false
+		iterator+=1
+	nextCar()
 
 
+	
+	
+	
+func nextCar():
+	placeholderplan.get_child(0).queue_free()		
+	
+	var letterNode = placeholderplan.get_child(1)
+	selectAlpha(letterNode,true)
+
+	letterNode.visible = true
+	currentNode = letterNode
+	
+	
+	
 func _process(delta):
 	if inLetterGame:
 		if cameraRaycast.is_colliding():
 			selectedLetter = cameraRaycast.get_collider()
-			coloredMaterial.albedo_color = Color.red
-			if selectedLetter and selectedLetter.get_node("MeshInstance"):
-				selectedLetter.get_node("MeshInstance").set_material_override(coloredMaterial)
+			if  inplan(selectedLetter):
+				if selectedLetter and selectedLetter.get_node("MeshInstance"):
+					selectAlpha(selectedLetter,true)
 			clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(selectedLetter)
 		else :
 			clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(null)
@@ -82,10 +132,14 @@ func switchCollisions(objectsType,enabled):
 
 func clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(letter):
 	for L in get_node("Zone_Lettres/Plan").get_children():
-		coloredMaterial = SpatialMaterial.new()
-		coloredMaterial.albedo_color = Color.white
-		if L != letter and !L in activatedLetterList:
-			L.get_node("MeshInstance").set_material_override(coloredMaterial)
+		if L != letter:
+			selectAlpha(L,false)
+
+func inplan(obj):
+	return obj.get_parent() == get_node("/root/RootNode/Zone_Lettres/Plan")
+	
+func istheletter(obj):
+	return obj.get_letter() == currentNode.get_letter()
 	
 func _input(event):
 	if event is InputEvent:
@@ -97,24 +151,32 @@ func _input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if inLetterGame:
-				if cameraRaycast.is_colliding() && !cameraRaycast.get_collider() in activatedLetterList :
-					activatedLetterList.append(cameraRaycast.get_collider())
-					moveLetter(cameraRaycast.get_collider())
+				var obj = cameraRaycast.get_collider()
+				if cameraRaycast.is_colliding() && inplan(obj) && istheletter(obj) :
+					moveLetter(obj)
+					if placeholderplan.get_child(1):
+						nextCar()
+					else:
+						start(wordList[randi()%wordList.size()])
 			else :
 				if cameraRaycast.is_colliding():
 					dialogBox.visible = !dialogBox.visible
 				
 func moveLetter(letter):
 	if letter is KinematicBody:
-		letter.speed = 0
-		var targetLocation = Vector3(xSpaceLetters,0,0)
+		var newletter = letter.duplicate()
+		var oldpos = letter.global_transform.origin
+		get_node("/root/RootNode/answer").add_child(newletter)
+		newletter.translation = oldpos
+		newletter.speed = 0
+		selectAlpha(newletter, false)
+		var targetLocation = currentNode.global_transform.origin
 		var rotationNeeded = Vector3(-30,0,0)
-		tween.interpolate_property(letter,"translation",letter.translation,
+		tween.interpolate_property(newletter,"translation",newletter.translation,
 		targetLocation,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
-		tween.interpolate_property(letter,"rotation_degrees",letter.rotation_degrees,
+		tween.interpolate_property(newletter,"rotation_degrees",newletter.rotation_degrees,
 		rotationNeeded,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		tween.start()
-		xSpaceLetters+=0.7
 		
 func changeSceneOrEndGame():
 		match currentIslandSceneIndex:
@@ -139,3 +201,5 @@ func fadeIn_IncrScene_ChangeEnv(newEnv):
 	
 func endGame():
 	get_tree().quit()
+	
+
