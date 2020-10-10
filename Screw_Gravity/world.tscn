@@ -1,28 +1,35 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/cursor.png" type="Texture" id=1]
 [ext_resource path="res://assets/maujoe.camera_control/scripts/camera_control.gd" type="Script" id=2]
-[ext_resource path="res://letter.gd" type="Script" id=3]
+[ext_resource path="res://world.gd" type="Script" id=4]
 
 [sub_resource type="SphereMesh" id=1]
 
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.34902, 0.533333, 0.34902, 1 )
+
 [sub_resource type="CylinderMesh" id=2]
 
-[sub_resource type="CubeMesh" id=3]
+[sub_resource type="QuadMesh" id=3]
 
-[sub_resource type="BoxShape" id=4]
+[sub_resource type="SpatialMaterial" id=4]
+flags_transparent = true
+albedo_color = Color( 0.607843, 0.607843, 0.607843, 0 )
 
 [node name="world" type="Spatial"]
+script = ExtResource( 4 )
 
 [node name="island" type="Spatial" parent="."]
+transform = Transform( 20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="island"]
-transform = Transform( 10, 0, 0, 0, 1, 0, 0, 0, 10, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000884008, -4.76837e-07, 0.000376081 )
 mesh = SubResource( 1 )
-material/0 = null
+material/0 = SubResource( 5 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.23802, 2.11344 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5, 5.56174 )
 current = true
 script = ExtResource( 2 )
 sensitivity = 0.2
@@ -30,25 +37,19 @@ yaw_limit = 90
 pitch_limit = 90
 
 [node name="Sprite3D" type="Sprite3D" parent="Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.858916 )
+transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, -0.858916 )
+modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
 pixel_size = 0.005
 texture = ExtResource( 1 )
 
 [node name="artefact" type="Spatial" parent="."]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2.84684, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="artefact"]
-transform = Transform( 1, 0, 0, 0, 2.5, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="letter" type="KinematicBody" parent="."]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 3.3743, 0 )
-script = ExtResource( 3 )
-osspeed = 0.1
-
-[node name="MeshInstance" type="MeshInstance" parent="letter"]
+[node name="plan" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.87686, -2.205 )
 mesh = SubResource( 3 )
-material/0 = null
-
-[node name="CollisionShape" type="CollisionShape" parent="letter"]
-shape = SubResource( 4 )
+material/0 = SubResource( 4 )
