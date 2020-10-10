@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/human_mid_one.OBJ-93da96fb67550dfe4ffec68b9c2cb9ef.mesh"
+
+[deps]
+
+files=[ "res://.import/human_mid_one.OBJ-93da96fb67550dfe4ffec68b9c2cb9ef.mesh" ]
+
+source_file="res://Materials/obj/human_mid_one.OBJ"
+dest_files=[ "res://.import/human_mid_one.OBJ-93da96fb67550dfe4ffec68b9c2cb9ef.mesh", "res://.import/human_mid_one.OBJ-93da96fb67550dfe4ffec68b9c2cb9ef.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/human_complete.OBJ-102420f9062ae9d53ad6a959f8a6cce7.mesh"
+
+[deps]
+
+files=[ "res://.import/human_complete.OBJ-102420f9062ae9d53ad6a959f8a6cce7.mesh" ]
+
+source_file="res://Materials/obj/human_complete.OBJ"
+dest_files=[ "res://.import/human_complete.OBJ-102420f9062ae9d53ad6a959f8a6cce7.mesh", "res://.import/human_complete.OBJ-102420f9062ae9d53ad6a959f8a6cce7.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

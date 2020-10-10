@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/statue_low_destroy.OBJ-56413650b4a2ff5643d18bf0c5a6d5bc.mesh"
+
+[deps]
+
+files=[ "res://.import/statue_low_destroy.OBJ-56413650b4a2ff5643d18bf0c5a6d5bc.mesh" ]
+
+source_file="res://Materials/obj/statue_low_destroy.OBJ"
+dest_files=[ "res://.import/statue_low_destroy.OBJ-56413650b4a2ff5643d18bf0c5a6d5bc.mesh", "res://.import/statue_low_destroy.OBJ-56413650b4a2ff5643d18bf0c5a6d5bc.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

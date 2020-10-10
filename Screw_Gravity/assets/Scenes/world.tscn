@@ -1,0 +1,97 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/Scenes/Movement_Tween.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/Scenes/Camera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/Scripts/Label.gd" type="Script" id=3]
+[ext_resource path="res://assets/Scripts/world.gd" type="Script" id=4]
+[ext_resource path="res://assets/Scripts/score.gd" type="Script" id=5]
+
+
+
+
+[sub_resource type="SphereMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.34902, 0.533333, 0.34902, 1 )
+
+[sub_resource type="CylinderMesh" id=3]
+
+[sub_resource type="QuadMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=5]
+flags_transparent = true
+albedo_color = Color( 0.607843, 0.607843, 0.607843, 0 )
+
+[node name="world" type="Spatial"]
+script = ExtResource( 4 )
+
+[node name="ui" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="ui"]
+margin_left = 18.9797
+margin_top = 18.4185
+margin_right = 218.98
+margin_bottom = 48.4185
+text = "Hello world"
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scoreLabel" type="Label" parent="ui"]
+margin_left = 21.3268
+margin_top = 71.8376
+margin_right = 68.3268
+margin_bottom = 85.8376
+text = "Score : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="score" type="Label" parent="ui"]
+anchor_top = 0.0140308
+anchor_bottom = 0.0140308
+margin_left = 89.7969
+margin_top = 71.8376
+margin_right = 129.797
+margin_bottom = 85.8376
+text = "0"
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="island" type="Spatial" parent="."]
+transform = Transform( 20, 0, 0, 0, 1, 0, 0, 0, 20, 0, 0, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="island"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000884008, -4.76837e-07, 0.000376081 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="artefact" type="Spatial" parent="."]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2.84684, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="artefact"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="plan" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.87686, -2.205 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="placeholder" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.944239, 0.329262, 0, -0.329262, 0.944239, 0, 6.39797, 2.71615 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="Camera" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 8.47933, 6.87819 )
+
+[node name="Movement_Tween" parent="." instance=ExtResource( 1 )]

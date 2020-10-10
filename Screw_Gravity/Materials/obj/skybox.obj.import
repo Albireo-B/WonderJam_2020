@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/skybox.obj-a5ba8cf80d56dd815ff9e34856ca59da.mesh"
+
+[deps]
+
+files=[ "res://.import/skybox.obj-a5ba8cf80d56dd815ff9e34856ca59da.mesh" ]
+
+source_file="res://Materials/obj/skybox.obj"
+dest_files=[ "res://.import/skybox.obj-a5ba8cf80d56dd815ff9e34856ca59da.mesh", "res://.import/skybox.obj-a5ba8cf80d56dd815ff9e34856ca59da.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

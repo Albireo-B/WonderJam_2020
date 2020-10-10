@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/statues_mid_low.OBJ-ef6857d5169bcae4da323ab4a447cb99.mesh"
+
+[deps]
+
+files=[ "res://.import/statues_mid_low.OBJ-ef6857d5169bcae4da323ab4a447cb99.mesh" ]
+
+source_file="res://Materials/obj/statues_mid_low.OBJ"
+dest_files=[ "res://.import/statues_mid_low.OBJ-ef6857d5169bcae4da323ab4a447cb99.mesh", "res://.import/statues_mid_low.OBJ-ef6857d5169bcae4da323ab4a447cb99.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

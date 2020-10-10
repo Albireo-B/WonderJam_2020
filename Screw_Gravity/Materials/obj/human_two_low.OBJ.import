@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/human_two_low.OBJ-36ff3f020f7ba11fea4aed4e93f24c85.mesh"
+
+[deps]
+
+files=[ "res://.import/human_two_low.OBJ-36ff3f020f7ba11fea4aed4e93f24c85.mesh" ]
+
+source_file="res://Materials/obj/human_two_low.OBJ"
+dest_files=[ "res://.import/human_two_low.OBJ-36ff3f020f7ba11fea4aed4e93f24c85.mesh", "res://.import/human_two_low.OBJ-36ff3f020f7ba11fea4aed4e93f24c85.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
