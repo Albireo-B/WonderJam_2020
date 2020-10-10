@@ -114,23 +114,22 @@ func moveLetter(letter):
 func changeSceneOrEndGame():
 		match currentIslandSceneIndex:
 			1:
-				fadeInAndIncrementScene()
-				currentIslandNode.queue_free()
-				var newInstance = islandIntermediate.instance()
-				currentIslandNode = newInstance
-				get_tree().get_root().get_node("RootNode").add_child(newInstance)
+				fadeIn_IncrScene_ChangeEnv(islandIntermediate)
 			2:
-				fadeInAndIncrementScene()
-				currentIslandNode.queue_free()
-				var newInstance = islandComplete.instance()
-				currentIslandNode = newInstance
-				get_tree().get_root().get_node("RootNode").add_child(newInstance)
+				fadeIn_IncrScene_ChangeEnv(islandComplete)
+				get_node("Camera").translation = Vector3(-0.131,2.5,2.7)
 			3:
 				currentIslandNode.queue_free()
 				endGame()
 
-func fadeInAndIncrementScene():
+func fadeIn_IncrScene_ChangeEnv(newEnv):
+	
 	transitionScene.get_node("AnimationPlayer").play("Fade")
+	currentIslandNode.queue_free()
+	yield(transitionScene.get_node("AnimationPlayer"), "animation_finished")
+	var newInstance = newEnv.instance()
+	currentIslandNode = newInstance
+	get_tree().get_root().get_node("RootNode").add_child(newInstance)
 	currentIslandSceneIndex+=1
 	
 func endGame():
