@@ -40,13 +40,13 @@ func _process(delta):
 	else:
 		if cameraRaycast.is_colliding():
 			selectedbody = cameraRaycast.get_collider()
-			selectedbody.get_node("Dead_body_one/Outline").visible = true
+			selectedbody.get_child(0).get_child(1).visible = true
 		else :
 			clearBodiesOutline()
 
 func clearBodiesOutline():
 	if selectedbody:
-		selectedbody.get_node("Dead_body_one/Outline").visible = false
+		selectedbody.get_child(0).get_child(1).visible = false
 	
 #deactivate collision mesh to allow the raycast to find the letter and inversely
 func switchMode():
@@ -64,7 +64,6 @@ func switchCollisions(objectsType,enabled):
 		for N in get_node("Environment/Dead_Bodies").get_children():
 			for i in range (1,N.get_children().size()-1):
 				N.get_child(i).disabled = !enabled
-				print("Collision disabled for "+N.get_name())
 	else :
 		for N in get_node("Zone_Lettres/Plan").get_children():
 			N.get_node("CollisionShape").disabled = !enabled
