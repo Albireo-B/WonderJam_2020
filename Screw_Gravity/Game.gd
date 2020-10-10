@@ -6,9 +6,8 @@ onready var tween = get_node("Movement_Tween")
 onready var cameraRaycast = get_node("Camera/RayCast")
 onready var dialogBox = get_node("Dialog_Box")
 onready var letterScene = preload("res://letter.tscn")
-#names to change
-onready var islandIntermediate = preload("res://IslandDestroy.tscn")
-onready var islandComplete = preload("res://IslandDestroy.tscn")
+onready var islandIntermediate = preload("res://IslandIntermediate.tscn")
+onready var islandComplete = preload("res://IslandComplete.tscn")
 
 
 var coloredMaterial = SpatialMaterial.new()
