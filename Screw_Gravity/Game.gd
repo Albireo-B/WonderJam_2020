@@ -47,13 +47,13 @@ func _process(delta):
 	else:
 		if cameraRaycast.is_colliding():
 			selectedbody = cameraRaycast.get_collider()
-			selectedbody.get_child(0).get_child(1).visible = true
+			selectedbody.get_child(0).get_node("Outline").visible = true
 		else :
 			clearBodiesOutline()
 
 func clearBodiesOutline():
 	if selectedbody:
-		selectedbody.get_child(0).get_child(1).visible = false
+		selectedbody.get_child(0).get_node("Outline").visible = false
 	
 #deactivate collision mesh to allow the raycast to find the letter and inversely
 func switchMode():
@@ -68,7 +68,7 @@ func switchMode():
 
 func switchCollisions(objectsType,enabled):
 	if objectsType == "Bodies":
-		for N in get_node("Environment/Dead_Bodies").get_children():
+		for N in currentIslandNode.get_node("Dead_Bodies").get_children():
 			for i in range (1,N.get_children().size()-1):
 				N.get_child(i).disabled = !enabled
 	else :
@@ -101,6 +101,7 @@ func _input(event):
 					dialogBox.visible = !dialogBox.visible
 				
 func moveLetter(letter):
+	if letter is KinematicBody:
 		letter.speed = 0
 		var targetLocation = Vector3(xSpaceLetters,0,0)
 		var rotationNeeded = Vector3(-30,0,0)
@@ -117,19 +118,21 @@ func changeSceneOrEndGame():
 				fadeIn_IncrScene_ChangeEnv(islandIntermediate)
 			2:
 				fadeIn_IncrScene_ChangeEnv(islandComplete)
-				get_node("Camera").translation = Vector3(-0.131,2.5,2.7)
 			3:
 				currentIslandNode.queue_free()
 				endGame()
 
 func fadeIn_IncrScene_ChangeEnv(newEnv):
 	
-	transitionScene.get_node("AnimationPlayer").play("Fade")
-	currentIslandNode.queue_free()
+	transitionScene.get_node("AnimationPlayer").play("Fade_in")
 	yield(transitionScene.get_node("AnimationPlayer"), "animation_finished")
+	currentIslandNode.queue_free()
 	var newInstance = newEnv.instance()
 	currentIslandNode = newInstance
 	get_tree().get_root().get_node("RootNode").add_child(newInstance)
+	if newEnv == islandComplete:
+		get_node("Camera").translation = Vector3(-0.131,2.5,2.7)
+	transitionScene.get_node("AnimationPlayer").play("Fade_out")
 	currentIslandSceneIndex+=1
 	
 func endGame():
