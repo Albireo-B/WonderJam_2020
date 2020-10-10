@@ -3,7 +3,9 @@ extends Spatial
 
 onready var tween = get_node("Movement_Tween")
 onready var cameraRaycast = get_node("Camera/RayCast")
+onready var dialogBox = get_node("Dialog_Box")
 onready var letterScene = preload("res://letter.tscn")
+
 
 var coloredMaterial = SpatialMaterial.new()
 var xSpaceLetters = -3
@@ -81,11 +83,14 @@ func _input(event):
 			inLetterGame = !inLetterGame
 			switchMode()
 	if event is InputEventMouseButton:
-		if event.pressed and inLetterGame:
-			if cameraRaycast.is_colliding() && !cameraRaycast.get_collider() in activatedLetterList :
-				activatedLetterList.append(cameraRaycast.get_collider())
-				moveLetter(cameraRaycast.get_collider())
-				
+		if event.pressed:
+			if inLetterGame:
+				if cameraRaycast.is_colliding() && !cameraRaycast.get_collider() in activatedLetterList :
+					activatedLetterList.append(cameraRaycast.get_collider())
+					moveLetter(cameraRaycast.get_collider())
+			else :
+				if cameraRaycast.is_colliding():
+					dialogBox.visible = !dialogBox.visible
 				
 func moveLetter(letter):
 		letter.speed = 0
