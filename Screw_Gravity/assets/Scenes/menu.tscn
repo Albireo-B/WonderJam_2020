@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://assets/Scenes/letter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/Scenes/Camera.tscn" type="PackedScene" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://Materials/alphabet/t.obj" type="ArrayMesh" id=5]
 [ext_resource path="res://Materials/alphabet/n.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://Materials/alphabet/d.obj" type="ArrayMesh" id=7]
-[ext_resource path="res://Materials/alphabet/u.obj" type="ArrayMesh" id=8]
 [ext_resource path="res://Materials/alphabet/q.obj" type="ArrayMesh" id=9]
 [ext_resource path="res://Materials/alphabet/e.obj" type="ArrayMesh" id=10]
 [ext_resource path="res://Materials/alphabet/a.obj" type="ArrayMesh" id=11]
@@ -196,9 +195,6 @@ disabled = true
 [node name="u" parent="quit" instance=ExtResource( 1 )]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.245237, 0, 0 )
 box = Vector3( 0, 0.3, 0 )
-
-[node name="MeshInstance" parent="quit/u" index="0"]
-mesh = ExtResource( 8 )
 
 [node name="CollisionShape" parent="quit/u" index="1"]
 disabled = true

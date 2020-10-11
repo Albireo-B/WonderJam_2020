@@ -35,7 +35,6 @@ emission_on_uv2 = false
 [sub_resource type="SphereShape" id=6]
 
 [node name="letter" type="KinematicBody"]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0 )
 collision_mask = 2
 script = ExtResource( 1 )
 

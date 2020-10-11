@@ -4,10 +4,10 @@ extends KinematicBody
 # Declare member variables here.
 export var speed = 0.01
 export var invisibility = false
-export var box = Vector3(6,2.5,2)
+export var box = Vector3(8,5,1.5)
 export var difficulty = 0
 
-onready var originpos = global_transform.origin
+onready var originpos = get_parent().global_transform.origin
 onready var randtarget = originpos
 #letter MUST BE SET WHIT THE SETTER (using setter getter is better)
 var letter;

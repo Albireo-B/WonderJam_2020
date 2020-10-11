@@ -27,7 +27,7 @@ var wordListIndex = 0
 #"where they" , "roll in" , "their horror" , "unheeded"
 #]
 #izi list
-var wordList = ["i" , "n","j","k"]
+var wordList = ["i" , "n","j","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k"]
 var playtime = false
 var zoomed = false
 var level1DialogArrays = ["That is not [color=#4ab3ff]dead[/color] which can eternal lie",
@@ -264,13 +264,16 @@ func _input(event):
 						selectAlpha(placeholderplan.get_child(curcar), false)
 						curcar+=1
 						if playtime:
-								get_node("ui/time").time += 4
+								get_node("ui/time").time += 10
 								get_node("ui/score").score += 100
 						nextCar()
 					elif curcar == placeholderplan.get_child_count()-1:
 						moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
 						selectAlpha(placeholderplan.get_child(curcar), false)
 						curcar+=1
+						if playtime:
+								get_node("ui/time").time += 10
+								get_node("ui/score").score += 100
 			else :
 				if !dialogBox.visible:
 					if cameraRaycast.is_colliding():
@@ -313,8 +316,16 @@ func _on_Movement_Tween_tween_all_completed():
 				inLetterGame = !inLetterGame
 				switchMode()
 				for L in get_node("Zone_Lettres/Plan").get_children():
-					L.set_difficulty(L.get_difficulty()+2)
+					L.set_difficulty((L.get_difficulty()+2)%4)
 				changeSceneOrEndGame()
 			else:
 				wordListIndex+=1
+				print(wordListIndex)
+				if wordListIndex/5 < 5:
+					for L in get_node("Zone_Lettres/Plan").get_children():
+						L.set_difficulty(wordListIndex/5)
+				else:
+					for L in get_node("Zone_Lettres/Plan").get_children():
+						L.speed = 1.5 + wordListIndex * 0.01
+						L.invdiff = 500 - wordListIndex
 				switchMode(wordList[wordListIndex])
