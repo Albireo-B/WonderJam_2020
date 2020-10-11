@@ -16,19 +16,19 @@ const CAM_ROT = Vector3(-10,0,0)
 
 
 var wordListIndex = 0
-#var wordList = [
-#	"it was" , "not meant" , "that we" , "should voyage" , "this far",
-#"ultimate horror" , "often paralyses" , "memory in" , "a merciful way",
-#"the world is" , "indeed comic" ,  "but the" , "joke is" , "on mankind",
-#"pleasure to me" , "is wonder",
-#"changeless thing" , "that lurks"  , "behind" , "the veil"  , "of reality",
-#"unless they happen" , "to be insane",
-#"and with" , "strange aeons" , "even death" , "may die",
-#"formless" , "infinite" , "unchanging" , "and unchangeable" , "void",
-#"where they" , "roll in" , "their horror" , "unheeded"
-#]
+var wordList = [
+	"it was" , "not meant" , "that we" , "should voyage" , "this far",
+"ultimate horror" , "often paralyses" , "memory in" , "a merciful way",
+"the world is" , "indeed comic" ,  "but the" , "joke is" , "on mankind",
+"pleasure to me" , "is wonder",
+"changeless thing" , "that lurks"  , "behind" , "the veil"  , "of reality",
+"unless they happen" , "to be insane",
+"and with" , "strange aeons" , "even death" , "may die",
+"formless" , "infinite" , "unchanging" , "and unchangeable" , "void",
+"where they" , "roll in" , "their horror" , "unheeded"
+]
 #izi list
-var wordList = ["i" , "n","j","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k"]
+#var wordList = ["i" , "n","j","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k","k"]
 var playtime = false
 var zoomed = false
 var level1DialogArrays = ["That is not [color=#4ab3ff]dead[/color] which can eternal lie",
@@ -37,9 +37,9 @@ var level2DialogArrays = ["[color=#4ab3ff]The[/color] oldest and strongest emoti
 "I have seen the [color=#4ab3ff]Elders[/color] dancing"]
 var level3DialogArrays = ["[b]Don't ever stop ![/b]"]
 
-#var levelsAnswer = ["a dead among men","fear the elders"]
+var levelsAnswer = ["a dead among men","fear the elders"]
 #izi list
-var levelsAnswer = ["a","b"]
+#var levelsAnswer = ["a","b"]
 
 var allDialogueRead = false
 var selectedLetter = null
