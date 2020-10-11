@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/human_cinematic_one.OBJ-8c6c8dcfc3fc44e6762f29f351ce1b14.mesh"
+
+[deps]
+
+files=[ "res://.import/human_cinematic_one.OBJ-8c6c8dcfc3fc44e6762f29f351ce1b14.mesh" ]
+
+source_file="res://Materials/obj/human_cinematic_one.OBJ"
+dest_files=[ "res://.import/human_cinematic_one.OBJ-8c6c8dcfc3fc44e6762f29f351ce1b14.mesh", "res://.import/human_cinematic_one.OBJ-8c6c8dcfc3fc44e6762f29f351ce1b14.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
