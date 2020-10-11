@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://assets/Scenes/letter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Materials/alphabet/q.obj" type="ArrayMesh" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Materials/alphabet/n.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://Materials/alphabet/d.obj" type="ArrayMesh" id=7]
 [ext_resource path="res://assets/cinematics/Menu0001-1.webm" type="VideoStream" id=8]
+[ext_resource path="res://assets/Scenes/SceneTransitionRect.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Materials/alphabet/e.obj" type="ArrayMesh" id=10]
 [ext_resource path="res://Materials/alphabet/a.obj" type="ArrayMesh" id=11]
 [ext_resource path="res://Materials/alphabet/y.obj" type="ArrayMesh" id=12]
@@ -61,6 +62,9 @@ autoplay = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.377, 0.8, 4.083 )
 
 [node name="play" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7879, 0 )
@@ -293,8 +297,8 @@ visible = false
 [node name="CollisionShape" parent="quit/t" index="1"]
 disabled = true
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.377, 0.8, 4.083 )
+[node name="SceneTransitionRect" parent="." instance=ExtResource( 9 )]
+visible = false
 [connection signal="mouse_entered" from="play" to="." method="_on_play_mouse_entered"]
 [connection signal="mouse_exited" from="play" to="." method="_on_play_mouse_exited"]
 [connection signal="mouse_entered" from="endless" to="." method="_on_endless_mouse_entered"]

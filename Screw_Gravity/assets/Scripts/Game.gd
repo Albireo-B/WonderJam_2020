@@ -52,12 +52,14 @@ var spacing = 0.25
 var curcar
 var lastcar
 
-
 func selectAlpha(obj, selected):
 	obj.get_node("MeshInstance").get_node("outline").visible = selected
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	get_node("Camera").rotation_degrees = CAM_ROT
+	get_node("Camera").translation = CAM_POS
+	transitionScene.get_node("AnimationPlayer").play("Fade_out")
 	currentIslandNode = get_node("Environment")
 	var alpha = "a".to_ascii()
 	for i in range(0,26):
