@@ -13,6 +13,7 @@ onready var placeholderplan = get_node("/root/RootNode/placeholder/Plan")
 const CAM_POS = Vector3(0,4,4.45)
 const CAM_ROT = Vector3(-10,0,0)
 
+
 var wordListIndex = 0
 var wordList = [
 	"it was" , "not meant" , "that we" , "should voyage" , "this far",
@@ -26,6 +27,7 @@ var wordList = [
 "where they" , "roll in" , "their horror" , "unheeded"
 ]
 
+var playtime = false
 var zoomed = false
 var level1DialogArrays = ["That is not [color=#4ab3ff]dead[/color] which can eternal lie",
 "[color=#4ab3ff]A[/color] stranger [color=#4ab3ff]among[/color] those who are still [color=#4ab3ff]men[/color]"]
@@ -67,6 +69,7 @@ func _ready():
 	switchMode()
 
 func start(sentence):
+	print(sentence)
 	for child in placeholderplan.get_children():
 		child.free()
 	for child in get_node("/root/RootNode/answer").get_children():
@@ -228,8 +231,11 @@ func changeSceneOrEndGame():
 				fadeIn_IncrScene_ChangeEnv(islandIntermediate)
 			2:
 				fadeIn_IncrScene_ChangeEnv(islandComplete)
-			3:
-				endGame()
+			_:
+				if !playtime:
+					endGame(get_node("ui/score").score)
+
+
 
 func fadeIn_IncrScene_ChangeEnv(newEnv):
 	transitionScene.get_node("AnimationPlayer").play("Fade_in")
@@ -242,13 +248,11 @@ func fadeIn_IncrScene_ChangeEnv(newEnv):
 	currentIslandSceneIndex+=1
 	allDialogueRead = false
 	
-func endGame():
+func endGame(score):
+#	play cinematic and do smething with score ???
 	get_tree().quit()
 	
 func _input(event):
-	if event is InputEvent:
-		if event.is_action_pressed("ui_cancel"):
-			changeSceneOrEndGame()
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if inLetterGame:
@@ -258,13 +262,14 @@ func _input(event):
 						moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
 						selectAlpha(placeholderplan.get_child(curcar), false)
 						curcar+=1
+						if playtime:
+								get_node("ui/time").time += 4
+								get_node("ui/score").score += 100
 						nextCar()
 					elif curcar == placeholderplan.get_child_count()-1:
 						moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
 						selectAlpha(placeholderplan.get_child(curcar), false)
 						curcar+=1
-
-
 			else :
 				if !dialogBox.visible:
 					if cameraRaycast.is_colliding():
@@ -294,6 +299,8 @@ func _on_Movement_Tween_tween_all_completed():
 			if currentIslandSceneIndex  <= 2:
 				switchMode(levelsAnswer[currentIslandSceneIndex-1])
 			else:
+				playtime = true
+				get_node("ui").visible = true
 				switchMode(wordList[wordListIndex])
 		else :
 			get_node("Camera/Sprite3D").visible = true

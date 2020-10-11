@@ -3,7 +3,7 @@ extends Label
 
 # Declare member variables here. Examples:
 export var score = 0
-
+onready var rootNode = get_parent().get_parent()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,7 +12,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var worldNode = get_node("/root/world")
-	if worldNode.playtime:
+	
+	if rootNode.playtime:
 		score += 1
 	text = str(score)

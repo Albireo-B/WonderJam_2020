@@ -3,7 +3,7 @@ extends Label
 
 # Declare member variables here.
 export var time = 30.0
-
+onready var rootNode = get_parent().get_parent()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,11 +12,11 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var worldNode = get_node("/root/world")
-	if worldNode.playtime:
+	if rootNode.playtime:
 		if time <= 0 :
 			time = 0
-			worldNode.playtime = false
+			rootNode.playtime = false
+			rootNode.changeSceneOrEndGame()
 		else:
 			time -= delta
 	text = str(time)

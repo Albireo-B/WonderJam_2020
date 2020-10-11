@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/Scripts/Label.gd" type="Script" id=1]
+[ext_resource path="res://assets/Scripts/score.gd" type="Script" id=2]
+[ext_resource path="res://Materials/fonts/Game.tres" type="DynamicFont" id=3]
+
+[node name="ui" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="."]
+margin_left = 18.9797
+margin_top = 18.4185
+margin_right = 218.98
+margin_bottom = 48.4185
+custom_fonts/font = ExtResource( 3 )
+text = "Hello world"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scoreLabel" type="Label" parent="."]
+margin_left = 21.3268
+margin_top = 71.8376
+margin_right = 68.3268
+margin_bottom = 85.8376
+custom_fonts/font = ExtResource( 3 )
+text = "Score : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="score" type="Label" parent="."]
+anchor_top = 0.0140308
+anchor_bottom = 0.0140308
+margin_left = 121.581
+margin_top = 72.8971
+margin_right = 161.581
+margin_bottom = 109.897
+custom_fonts/font = ExtResource( 3 )
+text = "0"
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
