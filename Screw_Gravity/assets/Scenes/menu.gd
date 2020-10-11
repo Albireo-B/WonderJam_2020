@@ -26,8 +26,6 @@ func _input(event):
 				yield(transAnim,"animation_finished")
 				yield(get_tree().create_timer(1.0), "timeout")
 				get_tree().change_scene("res://assets/Scenes/Game.tscn")
-			"endless":
-				get_tree().change_scene("res://assets/Scenes/Game.tscn")
 			"quit":
 				trans.visible = true
 				transAnim.play("Fade_in")
@@ -42,14 +40,6 @@ func _on_play_mouse_exited():
 	get_node("play/MeshInstance").visible = false
 	currentNode = null
 
-func _on_endless_mouse_entered():
-	get_node("endless/MeshInstance").visible = true
-	currentNode = "endless"
-	
-func _on_endless_mouse_exited():
-	get_node("endless/MeshInstance").visible = false
-	currentNode = null
-
 func _on_quit_mouse_entered():
 	get_node("quit/MeshInstance").visible = true
 	currentNode = "quit"
@@ -57,6 +47,4 @@ func _on_quit_mouse_entered():
 func _on_quit_mouse_exited():
 	get_node("quit/MeshInstance").visible = false
 	currentNode = null
-
-
 
