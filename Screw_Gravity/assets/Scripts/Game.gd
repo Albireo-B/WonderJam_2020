@@ -33,6 +33,9 @@ var level2DialogArrays = ["[color=#4ab3ff]The[/color] oldest and strongest emoti
 "I have seen the [color=#4ab3ff]Elders[/color] dancing"]
 var level3DialogArrays = ["[b]Don't ever stop ![/b]"]
 
+var levelsAnswer = ["a dead among men","fear the elders"]
+
+var allDialogueRead = false
 var selectedLetter = null
 var selectedbody = null
 var inLetterGame = false
@@ -54,7 +57,7 @@ func _ready():
 	var alpha = "a".to_ascii()
 	for i in range(0,26):
 		var letter = letterScene.instance()
-		letter.set_difficulty(4)
+		letter.set_difficulty(0)
 		var newalpha = alpha
 		newalpha[0] = alpha[0]+i
 		letter.set_letter(newalpha.get_string_from_ascii())
@@ -63,6 +66,7 @@ func _ready():
 	switchMode()
 
 func start(sentence_):
+	print(sentence)
 	for child in placeholderplan.get_children():
 		child.queue_free()
 	for child in get_node("/root/RootNode/answer").get_children():
@@ -89,12 +93,8 @@ func nextCar():
 	curcar+=1
 	var letterNode = placeholderplan.get_child(curcar)
 	selectAlpha(letterNode,true)
-
 	letterNode.visible = true
-	
-	currentNode = letterNode
-	
-	
+	currentNode = letterNode	
 	
 func _process(delta):
 	if inLetterGame:
@@ -129,25 +129,38 @@ func zoomOutAndDialog():
 func displayAccordingMessage():
 	match currentIslandSceneIndex:
 		1:
-			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level1DialogArrays[randi()%level1DialogArrays.size()]+"[/center]"
+			var index = randi()%level1DialogArrays.size()
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level1DialogArrays[index]+"[/center]"
+			level1DialogArrays.remove(index)
+			if level1DialogArrays.size() == 0:
+				allDialogueRead = true
 		2:
+			var index = randi()%level2DialogArrays.size()
 			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level2DialogArrays[randi()%level1DialogArrays.size()]+"[/center]"
+			level2DialogArrays.remove(index)
+			if level2DialogArrays.size() == 0:
+				allDialogueRead = true
 		3:
+			var index = randi()%level3DialogArrays.size()
 			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level3DialogArrays[randi()%level1DialogArrays.size()]+"[/center]"
-			
+			level3DialogArrays.remove(index)
+			if level3DialogArrays.size() == 0:
+				allDialogueRead = true
+
 func clearBodiesOutline():
 	if selectedbody:
 		selectedbody.get_child(0).get_node("Outline").visible = false
 		
 #deactivate collision mesh to allow the raycast to find the letter and inversely
-func switchMode():
+func switchMode(sentence=null):
 	clearBodiesOutline()
 	clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(null)
 	if inLetterGame:
 		switchCollisions("Bodies",false)
 		for L in get_node("Zone_Lettres/Plan").get_children():
 			L.visible = true
-		start("start")
+		if sentence:
+			start(sentence)
 		switchCollisions("Letters",true)
 	else:
 		switchCollisions("Bodies",true)
@@ -216,6 +229,7 @@ func fadeIn_IncrScene_ChangeEnv(newEnv):
 	get_tree().get_root().get_node("RootNode").add_child(newInstance)
 	transitionScene.get_node("AnimationPlayer").play("Fade_out")
 	currentIslandSceneIndex+=1
+	allDialogueRead = false
 	
 func endGame():
 	get_tree().quit()
@@ -230,10 +244,10 @@ func _input(event):
 				var obj = cameraRaycast.get_collider()
 				if cameraRaycast.is_colliding() && inplan(obj) && istheletter(obj) :
 					moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
-					if placeholderplan.get_child_count() > curcar:
+					selectAlpha(placeholderplan.get_child(curcar), false)
+					if curcar < placeholderplan.get_child_count()-1 :
 						nextCar()
-					else:
-						start(wordList[randi()%wordList.size()])
+
 			else :
 				if !dialogBox.visible:
 					if cameraRaycast.is_colliding():
@@ -252,13 +266,21 @@ func _on_Movement_Tween_tween_all_completed():
 			displayAccordingMessage()	
 			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label/Body_AnimationPlayer").play("TextDisplay")
 			dialogBox.visible = true
-		else :
+		elif allDialogueRead:
 			inLetterGame = !inLetterGame
 			get_node("Camera/Sprite3D").visible = true
 			get_node("Camera").set_enabled(true)
 			get_node("Camera/RayCast").enabled = true
-			switchMode()
+			switchMode(levelsAnswer[currentIslandSceneIndex-1])
+		else :
+			get_node("Camera/Sprite3D").visible = true
+			get_node("Camera").set_enabled(true)
+			get_node("Camera/RayCast").enabled = true
 	else:
-		placeholderplan.get_child(lastcar).visible = false
-		lastcar+=1	
+		if curcar == placeholderplan.get_child_count()-1:
+			inLetterGame = !inLetterGame
+			switchMode()
+			for L in get_node("Zone_Lettres/Plan").get_children():
+				L.set_difficulty(L.get_difficulty()+2)
+			changeSceneOrEndGame()
 
