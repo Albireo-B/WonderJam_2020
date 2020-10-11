@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Screw_Gravity"
-run/main_scene="res://assets/Scenes/Game.tscn"
+run/main_scene="res://assets/Scenes/menu.tscn"
 config/icon="res://icon.png"
 
 [display]

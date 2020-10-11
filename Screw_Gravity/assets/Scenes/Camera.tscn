@@ -12,7 +12,7 @@ yaw_limit = 90
 pitch_limit = 90
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform( 0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, 0, -1 )
+transform = Transform( 0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, -1 )
 texture = ExtResource( 2 )
 
 [node name="RayCast" type="RayCast" parent="."]

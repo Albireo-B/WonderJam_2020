@@ -53,12 +53,13 @@ var curcar
 var lastcar
 var help = false
 
-
 func selectAlpha(obj, selected):
 	obj.get_node("MeshInstance").get_node("outline").visible = selected
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	get_node("Camera").mouselook = false
+	transitionScene.get_node("AnimationPlayer").play("Fade_out")
 	currentIslandNode = get_node("Environment")
 	var alpha = "a".to_ascii()
 	for i in range(0,26):
@@ -70,6 +71,7 @@ func _ready():
 		letter.translate(letter.new_destination())
 		get_node("/root/RootNode/Zone_Lettres/Plan").add_child(letter) 
 	switchMode()
+
 
 func start(sentence, help_ = true):
 	help = help_
@@ -355,3 +357,8 @@ func _on_Audio_Tween_tween_completed(object, key):
 
 func _on_EndCinematicVideo_finished():
 	get_tree().quit()
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "Fade_out":
+		get_node("Camera").mouselook = true
