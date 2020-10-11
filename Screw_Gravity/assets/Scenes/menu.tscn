@@ -1,19 +1,25 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://assets/Scenes/letter.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/Scenes/Camera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Materials/alphabet/q.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://Materials/alphabet/i.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://Materials/alphabet/s.obj" type="ArrayMesh" id=4]
 [ext_resource path="res://Materials/alphabet/t.obj" type="ArrayMesh" id=5]
 [ext_resource path="res://Materials/alphabet/n.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://Materials/alphabet/d.obj" type="ArrayMesh" id=7]
-[ext_resource path="res://Materials/alphabet/q.obj" type="ArrayMesh" id=9]
+[ext_resource path="res://assets/cinematics/Menu0001-1.webm" type="VideoStream" id=8]
 [ext_resource path="res://Materials/alphabet/e.obj" type="ArrayMesh" id=10]
 [ext_resource path="res://Materials/alphabet/a.obj" type="ArrayMesh" id=11]
 [ext_resource path="res://Materials/alphabet/y.obj" type="ArrayMesh" id=12]
 [ext_resource path="res://Materials/alphabet/p.obj" type="ArrayMesh" id=13]
 [ext_resource path="res://Materials/alphabet/l.obj" type="ArrayMesh" id=14]
 [ext_resource path="res://assets/Scenes/menu.gd" type="Script" id=15]
+
+[sub_resource type="Environment" id=7]
+ambient_light_color = Color( 0.576471, 0.478431, 0.478431, 1 )
+
+[sub_resource type="ViewportTexture" id=6]
+viewport_path = NodePath("Sprite3D/Viewport")
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 1, 0, 0.141176, 1 )
@@ -32,6 +38,29 @@ albedo_color = Color( 1, 0, 0, 1 )
 
 [node name="menu" type="Spatial"]
 script = ExtResource( 15 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 7 )
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.40159, 0.8, -3.864 )
+modulate = Color( 0.976471, 0.976471, 0.976471, 1 )
+texture = SubResource( 6 )
+
+[node name="Viewport" type="Viewport" parent="Sprite3D"]
+size = Vector2( 1920, 1080 )
+render_target_v_flip = true
+
+[node name="VideoPlayer" type="VideoPlayer" parent="Sprite3D/Viewport"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+rect_min_size = Vector2( 1920, 1080 )
+mouse_filter = 2
+stream = ExtResource( 8 )
+autoplay = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="play" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7879, 0 )
@@ -53,6 +82,9 @@ box = Vector3( 0, 0.3, 0 )
 [node name="MeshInstance" parent="play/p" index="0"]
 mesh = ExtResource( 13 )
 
+[node name="outline" parent="play/p/MeshInstance" index="0"]
+visible = false
+
 [node name="CollisionShape" parent="play/p" index="1"]
 disabled = true
 
@@ -62,6 +94,9 @@ box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="play/l" index="0"]
 mesh = ExtResource( 14 )
+
+[node name="outline" parent="play/l/MeshInstance" index="0"]
+visible = false
 
 [node name="CollisionShape" parent="play/l" index="1"]
 disabled = true
@@ -73,6 +108,9 @@ box = Vector3( 0, 0.3, 0 )
 [node name="MeshInstance" parent="play/a" index="0"]
 mesh = ExtResource( 11 )
 
+[node name="outline" parent="play/a/MeshInstance" index="0"]
+visible = false
+
 [node name="CollisionShape" parent="play/a" index="1"]
 disabled = true
 
@@ -82,6 +120,9 @@ box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="play/y" index="0"]
 mesh = ExtResource( 12 )
+
+[node name="outline" parent="play/y/MeshInstance" index="0"]
+visible = false
 
 [node name="CollisionShape" parent="play/y" index="1"]
 disabled = true
@@ -106,6 +147,9 @@ box = Vector3( 0, 0.3, 0 )
 [node name="MeshInstance" parent="endless/e" index="0"]
 mesh = ExtResource( 10 )
 
+[node name="outline" parent="endless/e/MeshInstance" index="0"]
+visible = false
+
 [node name="CollisionShape" parent="endless/e" index="1"]
 disabled = true
 
@@ -115,6 +159,9 @@ box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="endless/n" index="0"]
 mesh = ExtResource( 6 )
+
+[node name="outline" parent="endless/n/MeshInstance" index="0"]
+visible = false
 
 [node name="CollisionShape" parent="endless/n" index="1"]
 disabled = true
@@ -126,6 +173,9 @@ box = Vector3( 0, 0.3, 0 )
 [node name="MeshInstance" parent="endless/d" index="0"]
 mesh = ExtResource( 7 )
 
+[node name="outline" parent="endless/d/MeshInstance" index="0"]
+visible = false
+
 [node name="CollisionShape" parent="endless/d" index="1"]
 disabled = true
 
@@ -135,6 +185,9 @@ box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="endless/l" index="0"]
 mesh = ExtResource( 14 )
+
+[node name="outline" parent="endless/l/MeshInstance" index="0"]
+visible = false
 
 [node name="CollisionShape" parent="endless/l" index="1"]
 disabled = true
@@ -146,6 +199,9 @@ box = Vector3( 0, 0.3, 0 )
 [node name="MeshInstance" parent="endless/e2" index="0"]
 mesh = ExtResource( 10 )
 
+[node name="outline" parent="endless/e2/MeshInstance" index="0"]
+visible = false
+
 [node name="CollisionShape" parent="endless/e2" index="1"]
 disabled = true
 
@@ -156,6 +212,9 @@ box = Vector3( 0, 0.3, 0 )
 [node name="MeshInstance" parent="endless/s" index="0"]
 mesh = ExtResource( 4 )
 
+[node name="outline" parent="endless/s/MeshInstance" index="0"]
+visible = false
+
 [node name="CollisionShape" parent="endless/s" index="1"]
 disabled = true
 
@@ -165,6 +224,9 @@ box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="endless/s2" index="0"]
 mesh = ExtResource( 4 )
+
+[node name="outline" parent="endless/s2/MeshInstance" index="0"]
+visible = false
 
 [node name="CollisionShape" parent="endless/s2" index="1"]
 disabled = true
@@ -187,7 +249,10 @@ transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.57839, 0, 0 )
 box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="quit/q" index="0"]
-mesh = ExtResource( 9 )
+mesh = ExtResource( 2 )
+
+[node name="outline" parent="quit/q/MeshInstance" index="0"]
+visible = false
 
 [node name="CollisionShape" parent="quit/q" index="1"]
 disabled = true
@@ -195,6 +260,9 @@ disabled = true
 [node name="u" parent="quit" instance=ExtResource( 1 )]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.245237, 0, 0 )
 box = Vector3( 0, 0.3, 0 )
+
+[node name="outline" parent="quit/u/MeshInstance" index="0"]
+visible = false
 
 [node name="CollisionShape" parent="quit/u" index="1"]
 disabled = true
@@ -206,6 +274,9 @@ box = Vector3( 0, 0.3, 0 )
 [node name="MeshInstance" parent="quit/i" index="0"]
 mesh = ExtResource( 3 )
 
+[node name="outline" parent="quit/i/MeshInstance" index="0"]
+visible = false
+
 [node name="CollisionShape" parent="quit/i" index="1"]
 disabled = true
 
@@ -216,19 +287,14 @@ box = Vector3( 0, 0.3, 0 )
 [node name="MeshInstance" parent="quit/t" index="0"]
 mesh = ExtResource( 5 )
 
+[node name="outline" parent="quit/t/MeshInstance" index="0"]
+visible = false
+
 [node name="CollisionShape" parent="quit/t" index="1"]
 disabled = true
 
-[node name="Camera" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 0.999994, -0.00345598, 0, 0.00345598, 0.999994, -1.34062, 1.01513, 3.22821 )
-mouse_mode = 0
-mouselook = false
-
-[node name="Sprite3D" parent="Camera" index="0"]
-visible = false
-
-[node name="RayCast" parent="Camera" index="1"]
-visible = false
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.377, 0.8, 4.083 )
 [connection signal="mouse_entered" from="play" to="." method="_on_play_mouse_entered"]
 [connection signal="mouse_exited" from="play" to="." method="_on_play_mouse_exited"]
 [connection signal="mouse_entered" from="endless" to="." method="_on_endless_mouse_entered"]
@@ -265,5 +331,3 @@ visible = false
 [editable path="quit/i"]
 
 [editable path="quit/t"]
-
-[editable path="Camera"]
