@@ -82,13 +82,12 @@ func start(sentence_):
 			letterNode.visible = false
 			letterNode.get_node("CollisionShape").queue_free()
 		iterator+=1
-	curcar = -1
+	curcar = 0
 	lastcar = 0
 	nextCar()
 
 func nextCar():
 	#placeholderplan.get_child(0).queue_free()		
-	curcar+=1
 	var letterNode = placeholderplan.get_child(curcar)
 	selectAlpha(letterNode,true)
 	letterNode.visible = true
@@ -241,10 +240,15 @@ func _input(event):
 			if inLetterGame:
 				var obj = cameraRaycast.get_collider()
 				if cameraRaycast.is_colliding() && inplan(obj) && istheletter(obj) :
-					moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
-					selectAlpha(placeholderplan.get_child(curcar), false)
 					if curcar < placeholderplan.get_child_count()-1 :
+						moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
+						selectAlpha(placeholderplan.get_child(curcar), false)
+						curcar+=1
 						nextCar()
+					elif curcar == placeholderplan.get_child_count()-1:
+						moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
+						selectAlpha(placeholderplan.get_child(curcar), false)
+						curcar+=1
 
 			else :
 				if !dialogBox.visible:
@@ -275,7 +279,9 @@ func _on_Movement_Tween_tween_all_completed():
 			get_node("Camera").set_enabled(true)
 			get_node("Camera/RayCast").enabled = true
 	else:
-		if curcar == placeholderplan.get_child_count()-1:
+		print(curcar)
+		print(placeholderplan.get_child_count())
+		if curcar == placeholderplan.get_child_count():
 			inLetterGame = !inLetterGame
 			switchMode()
 			for L in get_node("Zone_Lettres/Plan").get_children():
