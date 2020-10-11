@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/ambience_sound_quifaitpeur.wav-3493d9f72f95dfeb59c0d8759b6c5db4.sample"
+
+[deps]
+
+source_file="res://assets/sounds/ambience_sound_quifaitpeur.wav"
+dest_files=[ "res://.import/ambience_sound_quifaitpeur.wav-3493d9f72f95dfeb59c0d8759b6c5db4.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

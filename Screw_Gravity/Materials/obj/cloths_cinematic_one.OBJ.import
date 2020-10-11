@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/cloths_cinematic_one.OBJ-caec218877207a5c00f3b0b36c377939.mesh"
+
+[deps]
+
+files=[ "res://.import/cloths_cinematic_one.OBJ-caec218877207a5c00f3b0b36c377939.mesh" ]
+
+source_file="res://Materials/obj/cloths_cinematic_one.OBJ"
+dest_files=[ "res://.import/cloths_cinematic_one.OBJ-caec218877207a5c00f3b0b36c377939.mesh", "res://.import/cloths_cinematic_one.OBJ-caec218877207a5c00f3b0b36c377939.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
