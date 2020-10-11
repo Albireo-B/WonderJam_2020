@@ -41,6 +41,8 @@ var currentIslandNode
 var sentence = ""
 var currentNode
 var spacing = 0.25
+var curcar
+var lastcar
 
 
 func selectAlpha(obj, selected):
@@ -78,12 +80,14 @@ func start(sentence_):
 			letterNode.visible = false
 			letterNode.get_node("CollisionShape").queue_free()
 		iterator+=1
+	curcar = -1
+	lastcar = 0
 	nextCar()
 
 func nextCar():
-	placeholderplan.get_child(0).queue_free()		
-	
-	var letterNode = placeholderplan.get_child(1)
+	#placeholderplan.get_child(0).queue_free()		
+	curcar+=1
+	var letterNode = placeholderplan.get_child(curcar)
 	selectAlpha(letterNode,true)
 
 	letterNode.visible = true
@@ -226,7 +230,7 @@ func _input(event):
 				var obj = cameraRaycast.get_collider()
 				if cameraRaycast.is_colliding() && inplan(obj) && istheletter(obj) :
 					moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
-					if placeholderplan.get_child(1):
+					if placeholderplan.get_child_count() > curcar:
 						nextCar()
 					else:
 						start(wordList[randi()%wordList.size()])
@@ -255,5 +259,6 @@ func _on_Movement_Tween_tween_all_completed():
 			get_node("Camera/RayCast").enabled = true
 			switchMode()
 	else:
-		pass
+		placeholderplan.get_child(lastcar).visible = false
+		lastcar+=1	
 
