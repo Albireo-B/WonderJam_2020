@@ -37,9 +37,9 @@ var level2DialogArrays = ["[color=#4ab3ff]The[/color] oldest and strongest emoti
 "I have seen the [color=#4ab3ff]Elders[/color] dancing"]
 var level3DialogArrays = ["[b]Don't ever stop ![/b]"]
 
-#var levelsAnswer = ["a dead among men","fear the elders"]
+var levelsAnswer = ["a dead among men","fear the elders"]
 #izi list
-var levelsAnswer = ["a","b"]
+#var levelsAnswer = ["a","b"]
 
 var allDialogueRead = false
 var selectedLetter = null
@@ -51,6 +51,7 @@ var currentNode
 var spacing = 0.25
 var curcar
 var lastcar
+var help = false
 
 func selectAlpha(obj, selected):
 	obj.get_node("MeshInstance").get_node("outline").visible = selected
@@ -72,7 +73,8 @@ func _ready():
 		get_node("/root/RootNode/Zone_Lettres/Plan").add_child(letter) 
 	switchMode()
 
-func start(sentence):
+func start(sentence, help_ = true):
+	help = help_
 	for child in placeholderplan.get_children():
 		child.free()
 	for child in get_node("/root/RootNode/answer").get_children():
@@ -95,8 +97,9 @@ func start(sentence):
 func nextCar():
 	#placeholderplan.get_child(0).queue_free()		
 	var letterNode = placeholderplan.get_child(curcar)
-	selectAlpha(letterNode,true)
-	letterNode.visible = true
+	if help:
+		selectAlpha(letterNode,true)
+		letterNode.visible = true
 	currentNode = letterNode	
 	
 func _process(delta):
@@ -171,7 +174,7 @@ func clearBodiesOutline():
 		selectedbody.get_child(0).get_node("Outline").visible = false
 		
 #deactivate collision mesh to allow the raycast to find the letter and inversely
-func switchMode(sentence=null):
+func switchMode(sentence=null, help = true):
 	clearBodiesOutline()
 	clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(null)
 	if inLetterGame:
@@ -179,7 +182,7 @@ func switchMode(sentence=null):
 		for L in get_node("Zone_Lettres/Plan").get_children():
 			L.visible = true
 		if sentence:
-			start(sentence)
+			start(sentence, help)
 		switchCollisions("Letters",true)
 	else:
 		switchCollisions("Bodies",true)
@@ -278,7 +281,7 @@ func _input(event):
 						selectAlpha(placeholderplan.get_child(curcar), false)
 						curcar+=1
 						if playtime:
-								get_node("ui/time").time += 10
+								get_node("ui/time").time += 4.0
 								get_node("ui/score").score += 100
 						nextCar()
 					elif curcar == placeholderplan.get_child_count()-1:
@@ -286,7 +289,7 @@ func _input(event):
 						selectAlpha(placeholderplan.get_child(curcar), false)
 						curcar+=1
 						if playtime:
-								get_node("ui/time").time += 10
+								get_node("ui/time").time += 4.0
 								get_node("ui/score").score += 100
 			else :
 				if !dialogBox.visible:
@@ -315,12 +318,14 @@ func _on_Movement_Tween_tween_all_completed():
 			get_node("Camera/Sprite3D").visible = true
 			get_node("Camera").set_enabled(true)
 			get_node("Camera/RayCast").enabled = true
-			if currentIslandSceneIndex  <= 2:
-				switchMode(levelsAnswer[currentIslandSceneIndex-1])
+			if currentIslandSceneIndex  == 1 :
+				switchMode(levelsAnswer[currentIslandSceneIndex-1],true)
+			elif currentIslandSceneIndex  == 2 :
+				switchMode(levelsAnswer[currentIslandSceneIndex-1],false)
 			else:
 				playtime = true
 				get_node("ui").visible = true
-				switchMode(wordList[wordListIndex])
+				switchMode(wordList[wordListIndex],true)
 		else :
 			get_node("Camera/Sprite3D").visible = true
 			get_node("Camera").set_enabled(true)

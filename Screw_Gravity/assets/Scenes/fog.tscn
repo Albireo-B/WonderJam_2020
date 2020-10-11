@@ -43,7 +43,7 @@ material = SubResource( 6 )
 
 [node name="fog" type="Particles"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.91648, 0 )
-amount = 150
+amount = 100
 speed_scale = 0.1
 process_material = SubResource( 5 )
 draw_pass_1 = SubResource( 7 )
