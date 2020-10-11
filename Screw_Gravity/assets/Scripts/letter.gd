@@ -2,7 +2,7 @@ extends KinematicBody
 
 
 # Declare member variables here.
-export var speed = 1
+export var speed = 0.01
 export var invisibility = false
 export var box = Vector3(6,2.5,2)
 export var difficulty = 0
@@ -21,7 +21,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	var direction = randtarget - global_transform.origin
-	if direction.length() < 1:
+	if direction.length() < .1:
 		var newpos = new_destination()
 		randtarget = originpos + newpos
 	else:
@@ -33,7 +33,7 @@ func _process(delta):
 	
 	
 func new_destination():
-	return Vector3((randf()*box.x-box.x/2),(randf()*box.y-box.y/2),(randf()*box.z-box.z/2))
+	return Vector3((randf()*box.x-box.x/2.0),(randf()*box.y-box.y/2.0),(randf()*box.z-box.z/2.0))
 	
 func set_letter(letter_): 
 	letter = letter_
