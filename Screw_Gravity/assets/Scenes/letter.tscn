@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/Scripts/letter.gd" type="Script" id=1]
-[ext_resource path="res://Materials/alphabet/k.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://Materials/alphabet/u.obj" type="ArrayMesh" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.572549, 0.988235, 0.843137, 1 )
@@ -32,7 +32,7 @@ emission_energy = 0.1
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="BoxShape" id=6]
+[sub_resource type="SphereShape" id=6]
 
 [node name="letter" type="KinematicBody"]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0 )
@@ -48,19 +48,18 @@ skeleton = NodePath("")
 material/0 = null
 
 [node name="outline" type="MeshInstance" parent="MeshInstance"]
-transform = Transform( 0.09, 0, 0, 0, 0.09, 0, 0, 0, 0.09, 0, 0, 0 )
-visible = false
+transform = Transform( 0.09, 0, 0, 0, 0.09, 0, 0, 0, 0.09, 0, -0.0175642, 0 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
 [node name="cloak" type="MeshInstance" parent="MeshInstance"]
-transform = Transform( 0.09, 0, 0, 0, 0.09, 0, 0, 0, 0.09, 0, 0, 0 )
+transform = Transform( 0.09, 0, 0, 0, 0.09, 0, 0, 0, 0.09, 0, -0.0175429, 0 )
 visible = false
 mesh = SubResource( 4 )
 material/0 = SubResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.05, 0, 0, 0, 0.1, 0, 0, 0, 0.01, 0, 0, 0 )
+transform = Transform( 0.18, 0, 0, 0, 0.18, 0, 0, 0, 0.18, 0, -0.0353748, -0.01 )
 shape = SubResource( 6 )
 
 [node name="cloak" type="Timer" parent="."]
