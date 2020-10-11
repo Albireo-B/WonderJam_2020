@@ -26,6 +26,7 @@ var wordList = [
 "where they" , "roll in" , "their horror" , "unheeded"
 ]
 
+var zoomed = false
 var selectedLetter = null
 var selectedbody = null
 var inLetterGame = false
@@ -53,7 +54,6 @@ func _ready():
 		letter.set_letter(newalpha.get_string_from_ascii())
 		get_node("/root/RootNode/Zone_Lettres/Plan").add_child(letter) 
 	switchMode()
-	start("start")
 
 func start(sentence_):
 	for child in placeholderplan.get_children():
@@ -62,7 +62,6 @@ func start(sentence_):
 		child.queue_free()
 	
 	sentence = sentence_
-	print(sentence)
 	var iterator = 0
 	for letter in sentence:
 		if letter != " ":
@@ -72,6 +71,7 @@ func start(sentence_):
 			placeholderplan.add_child(letterNode)
 			letterNode.translate(Vector3((-sentence.length()*spacing)/2+iterator * spacing,0,0))
 			letterNode.visible = false
+			letterNode.get_node("CollisionShape").queue_free()
 		iterator+=1
 	nextCar()
 
@@ -82,6 +82,7 @@ func nextCar():
 	selectAlpha(letterNode,true)
 
 	letterNode.visible = true
+	
 	currentNode = letterNode
 	
 	
@@ -137,10 +138,15 @@ func switchMode():
 		switchCollisions("Bodies",false)
 		for L in get_node("Zone_Lettres/Plan").get_children():
 			L.visible = true
+		start("start")
 		switchCollisions("Letters",true)
 	else:
 		switchCollisions("Bodies",true)
 		for L in get_node("Zone_Lettres/Plan").get_children():
+			L.visible = false
+		for L in get_node("placeholder/Plan").get_children():
+			L.visible = false
+		for L in get_node("answer").get_children():
 			L.visible = false
 		switchCollisions("Letters",false)
 
@@ -169,6 +175,7 @@ func moveObject(object,targetLocation,rotationNeeded):
 		get_node("/root/RootNode/answer").add_child(newletter)
 		newletter.translation = oldpos
 		newletter.speed = 0
+		newletter.get_node("CollisionShape").queue_free()
 		selectAlpha(newletter, false)
 		tween.interpolate_property(newletter,"translation",newletter.translation,
 		targetLocation,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
@@ -222,22 +229,26 @@ func _input(event):
 				if !dialogBox.visible:
 					if cameraRaycast.is_colliding():
 						zoomInAndDialog(cameraRaycast.get_collider())
+						zoomed = true
 				else:
-					inLetterGame = !inLetterGame
 					zoomOutAndDialog()
+					zoomed = false
 
 func istheletter(obj):
 	return obj.get_letter() == currentNode.get_letter()
 	
 func _on_Movement_Tween_tween_all_completed():
 	if !inLetterGame:
-		if !dialogBox.visible:
+		if zoomed:
 			displayAccordingMessage()	
 			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label/Body_AnimationPlayer").play("TextDisplay")
 			dialogBox.visible = true
-	else :
-		get_node("Camera/Sprite3D").visible = true
-		get_node("Camera").set_enabled(true)
-		get_node("Camera/RayCast").enabled = true
-		switchMode()
+		else :
+			inLetterGame = !inLetterGame
+			get_node("Camera/Sprite3D").visible = true
+			get_node("Camera").set_enabled(true)
+			get_node("Camera/RayCast").enabled = true
+			switchMode()
+	else:
+		pass
 
