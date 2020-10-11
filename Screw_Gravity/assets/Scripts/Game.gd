@@ -254,6 +254,9 @@ func _input(event):
 			else :
 				if !dialogBox.visible:
 					if cameraRaycast.is_colliding():
+						var N = cameraRaycast.get_collider()
+						for i in range (1,N.get_children().size()):
+							N.get_child(i).disabled = true
 						zoomInAndDialog(cameraRaycast.get_collider())
 						zoomed = true
 				else:
