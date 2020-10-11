@@ -27,6 +27,12 @@ var wordList = [
 ]
 
 var zoomed = false
+var level1DialogArrays = ["That is not [color=#4ab3ff]dead[/color] which can eternal lie",
+"[color=#4ab3ff]A[/color] stranger [color=#4ab3ff]among[/color] those who are still [color=#4ab3ff]men[/color]"]
+var level2DialogArrays = ["[color=#4ab3ff]The[/color] oldest and strongest emotion of mankind is [color=#4ab3ff]fear[/color]",
+"I have seen the [color=#4ab3ff]Elders[/color] dancing"]
+var level3DialogArrays = ["[b]Don't ever stop ![/b]"]
+
 var selectedLetter = null
 var selectedbody = null
 var inLetterGame = false
@@ -35,9 +41,7 @@ var currentIslandNode
 var sentence = ""
 var currentNode
 var spacing = 0.25
-var level1DialogArrays = ["What happened here?","I can't remember anything","Poor guys"]
-var level2DialogArrays = ["Hi there","General kenobi","Bip","Boup","tryndamere est passé par la"]
-var level3DialogArrays = ["Hi there","General kenobi","Bip","Boup","tryndamere est passé par la"]
+
 
 func selectAlpha(obj, selected):
 	obj.get_node("MeshInstance").get_node("outline").visible = selected
@@ -121,11 +125,11 @@ func zoomOutAndDialog():
 func displayAccordingMessage():
 	match currentIslandSceneIndex:
 		1:
-			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").text = level1DialogArrays[randi()%level1DialogArrays.size()]
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level1DialogArrays[randi()%level1DialogArrays.size()]+"[/center]"
 		2:
-			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").text = level2DialogArrays[randi()%level2DialogArrays.size()]
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level2DialogArrays[randi()%level1DialogArrays.size()]+"[/center]"
 		3:
-			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").text = level2DialogArrays[randi()%level2DialogArrays.size()]
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level3DialogArrays[randi()%level1DialogArrays.size()]+"[/center]"
 			
 func clearBodiesOutline():
 	if selectedbody:
