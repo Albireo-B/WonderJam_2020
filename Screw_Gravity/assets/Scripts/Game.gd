@@ -48,10 +48,11 @@ func _ready():
 	var alpha = "a".to_ascii()
 	for i in range(0,26):
 		var letter = letterScene.instance()
-		letter.speed = 1
+		letter.set_difficulty(4)
 		var newalpha = alpha
 		newalpha[0] = alpha[0]+i
 		letter.set_letter(newalpha.get_string_from_ascii())
+		letter.translate(letter.new_destination())
 		get_node("/root/RootNode/Zone_Lettres/Plan").add_child(letter) 
 	switchMode()
 
