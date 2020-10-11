@@ -66,12 +66,10 @@ func _ready():
 	switchMode()
 
 func start(sentence_):
-	print(sentence)
 	for child in placeholderplan.get_children():
 		child.queue_free()
 	for child in get_node("/root/RootNode/answer").get_children():
 		child.queue_free()
-	
 	sentence = sentence_
 	var iterator = 0
 	for letter in sentence:
@@ -136,13 +134,13 @@ func displayAccordingMessage():
 				allDialogueRead = true
 		2:
 			var index = randi()%level2DialogArrays.size()
-			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level2DialogArrays[randi()%level1DialogArrays.size()]+"[/center]"
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level2DialogArrays[index]+"[/center]"
 			level2DialogArrays.remove(index)
 			if level2DialogArrays.size() == 0:
 				allDialogueRead = true
 		3:
 			var index = randi()%level3DialogArrays.size()
-			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level3DialogArrays[randi()%level1DialogArrays.size()]+"[/center]"
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label").bbcode_text = "[center]"+level3DialogArrays[index]+"[/center]"
 			level3DialogArrays.remove(index)
 			if level3DialogArrays.size() == 0:
 				allDialogueRead = true
