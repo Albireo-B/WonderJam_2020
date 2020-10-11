@@ -63,7 +63,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.377, 0.8, 4.083 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60064, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="play"]
-transform = Transform( -6.51683e-08, 0, 0.4, 0, 0.4, 0, -0.4, 0, -6.51683e-08, 0, 0, 0 )
+transform = Transform( -6.51683e-08, 0, 0.5, 0, 0.4, 0, -0.4, 0, -8.14603e-08, 0.00110757, 0, 0 )
 visible = false
 mesh = SubResource( 4 )
 material/0 = null
@@ -86,7 +86,7 @@ visible = false
 disabled = true
 
 [node name="l" parent="play" instance=ExtResource( 1 )]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.169728, 0, 0 )
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.141602, -0.0314986, 0 )
 box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="play/l" index="0"]
@@ -99,7 +99,7 @@ visible = false
 disabled = true
 
 [node name="a" parent="play" instance=ExtResource( 1 )]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.151695, 0, 0 )
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.186649, 0.0358958, 0 )
 box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="play/a" index="0"]
@@ -112,7 +112,7 @@ visible = false
 disabled = true
 
 [node name="y" parent="play" instance=ExtResource( 1 )]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.430448, 0, 0 )
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.510981, 0.0633764, 0 )
 box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="play/y" index="0"]
@@ -128,7 +128,7 @@ disabled = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.110257, 0.553421, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="quit"]
-transform = Transform( -6.51683e-08, 0, 0.5, 0, 0.4, 0, -0.4, 0, -8.14603e-08, -0.116254, 0, 0 )
+transform = Transform( -6.51683e-08, 0, 0.5, 0, 0.4, 0, -0.4, 0, -8.14603e-08, -0.125014, 0.0520338, 0 )
 visible = false
 mesh = SubResource( 4 )
 material/0 = SubResource( 7 )
@@ -138,7 +138,7 @@ transform = Transform( -6.51683e-08, 0, 0.5, 0, 0.4, 0, -0.4, 0, -8.14603e-08, -
 shape = SubResource( 5 )
 
 [node name="q" parent="quit" instance=ExtResource( 1 )]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.57839, 0, 0 )
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.57839, -0.0349748, 0 )
 box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="quit/q" index="0"]
@@ -151,7 +151,7 @@ visible = false
 disabled = true
 
 [node name="u" parent="quit" instance=ExtResource( 1 )]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.245237, 0, 0 )
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.200126, 0.101829, 0 )
 box = Vector3( 0, 0.3, 0 )
 
 [node name="outline" parent="quit/u/MeshInstance" index="0"]
@@ -161,7 +161,7 @@ visible = false
 disabled = true
 
 [node name="i" parent="quit" instance=ExtResource( 1 )]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.00247854, 0, 0 )
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.0578957, 0.0246488, 0 )
 box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="quit/i" index="0"]
@@ -174,7 +174,7 @@ visible = false
 disabled = true
 
 [node name="t" parent="quit" instance=ExtResource( 1 )]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.338743, 0, 0 )
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.38289, 0.14178, 0 )
 box = Vector3( 0, 0.3, 0 )
 
 [node name="MeshInstance" parent="quit/t" index="0"]
