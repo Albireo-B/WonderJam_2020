@@ -14,7 +14,7 @@ onready var placeholderplan = get_node("/root/RootNode/placeholder/Plan")
 const CAM_POS = Vector3(0,4,4.45)
 const CAM_ROT = Vector3(-10,0,0)
 
-
+var numberLetter = 0
 var wordListIndex = 0
 var wordList = [
 	"it was" , "not meant" , "that we" , "should voyage" , "this far",
@@ -281,16 +281,32 @@ func _input(event):
 						selectAlpha(placeholderplan.get_child(curcar), false)
 						curcar+=1
 						if playtime:
+								numberLetter+=1
 								get_node("ui/time").time += 4.0
 								get_node("ui/score").score += 100
+								if numberLetter/5 < 5:
+									for L in get_node("Zone_Lettres/Plan").get_children():
+										L.set_difficulty(numberLetter/5)
+								else:
+									for L in get_node("Zone_Lettres/Plan").get_children():
+										L.speed = 1.5 + numberLetter * 0.01
+										L.invdiff = 500 - numberLetter
 						nextCar()
 					elif curcar == placeholderplan.get_child_count()-1:
 						moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
 						selectAlpha(placeholderplan.get_child(curcar), false)
 						curcar+=1
 						if playtime:
+								numberLetter+=1
 								get_node("ui/time").time += 4.0
 								get_node("ui/score").score += 100
+								if numberLetter/5 < 5:
+									for L in get_node("Zone_Lettres/Plan").get_children():
+										L.set_difficulty(numberLetter/5)
+								else:
+									for L in get_node("Zone_Lettres/Plan").get_children():
+										L.speed = 1.5 + numberLetter * 0.01
+										L.invdiff = 500 - numberLetter
 			else :
 				if !dialogBox.visible:
 					if cameraRaycast.is_colliding():
@@ -340,13 +356,7 @@ func _on_Movement_Tween_tween_all_completed():
 				changeSceneOrEndGame()
 			else:
 				wordListIndex+=1
-				if wordListIndex/5 < 5:
-					for L in get_node("Zone_Lettres/Plan").get_children():
-						L.set_difficulty(wordListIndex/5)
-				else:
-					for L in get_node("Zone_Lettres/Plan").get_children():
-						L.speed = 1.5 + wordListIndex * 0.01
-						L.invdiff = 500 - wordListIndex
+				
 				switchMode(wordList[wordListIndex])
 
 
@@ -356,7 +366,7 @@ func _on_Audio_Tween_tween_completed(object, key):
 
 
 func _on_EndCinematicVideo_finished():
-	get_tree().quit()
+	get_tree().change_scene("res://assets/Scenes/menu.tscn")
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):
