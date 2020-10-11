@@ -37,9 +37,9 @@ var level2DialogArrays = ["[color=#4ab3ff]The[/color] oldest and strongest emoti
 "I have seen the [color=#4ab3ff]Elders[/color] dancing"]
 var level3DialogArrays = ["[b]Don't ever stop ![/b]"]
 
-var levelsAnswer = ["a dead among men","fear the elders"]
+#var levelsAnswer = ["a dead among men","fear the elders"]
 #izi list
-#var levelsAnswer = ["a","b"]
+var levelsAnswer = ["a","b"]
 
 var allDialogueRead = false
 var selectedLetter = null
