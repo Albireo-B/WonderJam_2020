@@ -14,5 +14,5 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	rootNode.get_node("SaveSystem").loadValue("scores", "score1")
 	text = str(rootNode.get_node("SaveSystem").highscore)
+
