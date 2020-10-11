@@ -10,7 +10,6 @@ onready var islandIntermediate = preload("res://assets/Scenes/IslandIntermediate
 onready var islandComplete = preload("res://assets/Scenes/IslandComplete.tscn")
 onready var placeholderplan = get_node("/root/RootNode/placeholder/Plan")
 
-
 const CAM_POS = Vector3(0,4,4.45)
 const CAM_ROT = Vector3(-10,0,0)
 
@@ -34,7 +33,9 @@ var level2DialogArrays = ["[color=#4ab3ff]The[/color] oldest and strongest emoti
 "I have seen the [color=#4ab3ff]Elders[/color] dancing"]
 var level3DialogArrays = ["[b]Don't ever stop ![/b]"]
 
-var levelsAnswer = ["a dead among men","fear the elders",wordList]
+var levelsAnswer = ["a dead among men","fear the elders"]
+#izi list
+#var levelsAnswer = ["a","b"]
 
 var allDialogueRead = false
 var selectedLetter = null
@@ -88,7 +89,6 @@ func start(sentence):
 func nextCar():
 	#placeholderplan.get_child(0).queue_free()		
 	var letterNode = placeholderplan.get_child(curcar)
-	print(letterNode.get_letter())
 	selectAlpha(letterNode,true)
 	letterNode.visible = true
 	currentNode = letterNode	
@@ -114,11 +114,24 @@ func zoomInAndDialog(targetObject):
 	get_node("Camera").set_enabled(false)
 	get_node("Camera/Sprite3D").visible = false
 	get_node("Camera/RayCast").enabled = false
-	if targetObject.get_name() == "Human_one":
-		moveObject(get_node("Camera"),Vector3(-3.35,3,-1),Vector3(0,0,0))
-	else:
-		moveObject(get_node("Camera"),Vector3(2.128,3.105,-1.937),Vector3(10,-90,0))
-
+	match currentIslandSceneIndex:
+		1:
+			if targetObject.get_name() == "Human_one":
+				moveObject(get_node("Camera"),Vector3(-3.35,3,-1),Vector3(0,0,0))
+			else:
+				moveObject(get_node("Camera"),Vector3(2.128,3.105,-1.937),Vector3(10,-90,0))
+		2:
+			if targetObject.get_name() == "Human_one":
+				moveObject(get_node("Camera"),Vector3(-1.516,2.819,-0.997),Vector3(0,94.32,0))
+			else:
+				moveObject(get_node("Camera"),Vector3(2.3,2.819,-3.094),Vector3(0,-150.5,0))
+		3:
+			if targetObject.get_name() == "Human_one":
+				moveObject(get_node("Camera"),Vector3(0.73,2.656,-0.048),Vector3(1.522,-57.78,7.335))
+			else:
+				moveObject(get_node("Camera"),Vector3(-2.916,3.607,0.077),Vector3(-40.07,-1.715,3.43))
+				
+				
 func zoomOutAndDialog():
 	dialogBox.visible = false
 	moveObject(get_node("Camera"),CAM_POS,CAM_ROT)
