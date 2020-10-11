@@ -2,7 +2,7 @@ extends Label
 
 
 # Declare member variables here.
-export var time = 3.0
+export var time = 30.0
 onready var rootNode = get_parent().get_parent()
 
 # Called when the node enters the scene tree for the first time.
