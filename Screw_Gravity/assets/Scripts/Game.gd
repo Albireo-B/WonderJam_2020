@@ -10,6 +10,10 @@ onready var islandIntermediate = preload("res://assets/Scenes/IslandIntermediate
 onready var islandComplete = preload("res://assets/Scenes/IslandComplete.tscn")
 onready var placeholderplan = get_node("/root/RootNode/placeholder/Plan")
 
+
+const CAM_POS = Vector3(0,4,4.45)
+const CAM_ROT = Vector3(-10,0,0)
+
 var wordList = [
 	"it was" , "not meant" , "that we" , "should voyage" , "this far",
 "ultimate horror" , "often paralyses" , "memory in" , "a merciful way",
@@ -49,7 +53,6 @@ func _ready():
 		letter.set_letter(newalpha.get_string_from_ascii())
 		get_node("/root/RootNode/Zone_Lettres/Plan").add_child(letter) 
 	switchMode()
-		
 	start("start")
 
 func start(sentence_):
@@ -72,10 +75,6 @@ func start(sentence_):
 		iterator+=1
 	nextCar()
 
-
-	
-	
-	
 func nextCar():
 	placeholderplan.get_child(0).queue_free()		
 	
@@ -97,13 +96,26 @@ func _process(delta):
 		else :
 			clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(null)
 	else:
-		if cameraRaycast.is_colliding():
+		if cameraRaycast.is_colliding() and !dialogBox.visible:
 			selectedbody = cameraRaycast.get_collider()
 			selectedbody.get_child(0).get_node("Outline").visible = true
 		else :
 			clearBodiesOutline()
 
+						
+func zoomInAndDialog(targetObject):
+	get_node("Camera").set_enabled(false)
+	get_node("Camera/Sprite3D").visible = false
+	get_node("Camera/RayCast").enabled = false
+	if targetObject.get_name() == "Human_one":
+		moveObject(get_node("Camera"),Vector3(-3.35,3,-1),Vector3(0,0,0))
+	else:
+		moveObject(get_node("Camera"),Vector3(2.128,3.105,-1.937),Vector3(10,-90,0))
 
+func zoomOutAndDialog():
+	dialogBox.visible = false
+	moveObject(get_node("Camera"),CAM_POS,CAM_ROT)
+	
 func displayAccordingMessage():
 	match currentIslandSceneIndex:
 		1:
@@ -141,8 +153,6 @@ func switchCollisions(objectsType,enabled):
 		for N in get_node("Zone_Lettres/Plan").get_children():
 			N.get_node("CollisionShape").disabled = !enabled
 			
-
-
 func clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(letter):
 	for L in get_node("Zone_Lettres/Plan").get_children():
 		if L != letter:
@@ -151,52 +161,24 @@ func clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(letter):
 func inplan(obj):
 	return obj.get_parent() == get_node("/root/RootNode/Zone_Lettres/Plan")
 	
-func istheletter(obj):
-	return obj.get_letter() == currentNode.get_letter()
-	
-
-func _input(event):
-	if event is InputEvent:
-		if event.is_action_pressed("ui_accept"):
-			inLetterGame = !inLetterGame
-			switchMode()
-		elif event.is_action_pressed("ui_cancel"):
-			changeSceneOrEndGame()
-	if event is InputEventMouseButton:
-		if event.pressed:
-			if inLetterGame:
-				var obj = cameraRaycast.get_collider()
-				if cameraRaycast.is_colliding() && inplan(obj) && istheletter(obj) :
-					moveLetter(obj)
-					if placeholderplan.get_child(1):
-						nextCar()
-					else:
-						start(wordList[randi()%wordList.size()])
-			else :
-				if cameraRaycast.is_colliding():
-					if dialogBox.visible:
-						inLetterGame = !inLetterGame
-						dialogBox.visible = false
-						switchMode()
-					else:
-						displayAccordingMessage()
-						dialogBox.visible = true
-						dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label/Body_AnimationPlayer").play("TextDisplay")
-
-				
-func moveLetter(letter):
-	if letter is KinematicBody:
+func moveObject(object,targetLocation,rotationNeeded):
+	if object is KinematicBody:
+		var letter = object
 		var newletter = letter.duplicate()
 		var oldpos = letter.global_transform.origin
 		get_node("/root/RootNode/answer").add_child(newletter)
 		newletter.translation = oldpos
 		newletter.speed = 0
 		selectAlpha(newletter, false)
-		var targetLocation = currentNode.global_transform.origin
-		var rotationNeeded = Vector3(-30,0,0)
 		tween.interpolate_property(newletter,"translation",newletter.translation,
 		targetLocation,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		tween.interpolate_property(newletter,"rotation_degrees",newletter.rotation_degrees,
+		rotationNeeded,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		tween.start()
+	elif object is Camera:
+		tween.interpolate_property(object,"translation",object.translation,
+		targetLocation,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+		tween.interpolate_property(object,"rotation_degrees",object.rotation_degrees,
 		rotationNeeded,2.0,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 		tween.start()
 		
@@ -222,4 +204,40 @@ func fadeIn_IncrScene_ChangeEnv(newEnv):
 func endGame():
 	get_tree().quit()
 	
+func _input(event):
+	if event is InputEvent:
+		if event.is_action_pressed("ui_cancel"):
+			changeSceneOrEndGame()
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if inLetterGame:
+				var obj = cameraRaycast.get_collider()
+				if cameraRaycast.is_colliding() && inplan(obj) && istheletter(obj) :
+					moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
+					if placeholderplan.get_child(1):
+						nextCar()
+					else:
+						start(wordList[randi()%wordList.size()])
+			else :
+				if !dialogBox.visible:
+					if cameraRaycast.is_colliding():
+						zoomInAndDialog(cameraRaycast.get_collider())
+				else:
+					inLetterGame = !inLetterGame
+					zoomOutAndDialog()
+
+func istheletter(obj):
+	return obj.get_letter() == currentNode.get_letter()
+	
+func _on_Movement_Tween_tween_all_completed():
+	if !inLetterGame:
+		if !dialogBox.visible:
+			displayAccordingMessage()	
+			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label/Body_AnimationPlayer").play("TextDisplay")
+			dialogBox.visible = true
+	else :
+		get_node("Camera/Sprite3D").visible = true
+		get_node("Camera").set_enabled(true)
+		get_node("Camera/RayCast").enabled = true
+		switchMode()
 
