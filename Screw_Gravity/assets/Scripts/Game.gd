@@ -211,7 +211,7 @@ func moveObject(object,targetLocation,rotationNeeded):
 		get_node("/root/RootNode/answer").add_child(newletter)
 		newletter.translation = oldpos
 		newletter.speed = 0
-		newletter.get_node("MeshInstance").get_node("outline").visible = false
+		newletter.get_node("MeshInstance").get_node("cloak").visible = false
 		newletter.get_node("CollisionShape").queue_free()
 		selectAlpha(newletter, false)
 		tween.interpolate_property(newletter,"translation",newletter.translation,
