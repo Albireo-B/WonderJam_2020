@@ -42,9 +42,10 @@ var selectedbody = null
 var inLetterGame = false
 var currentIslandSceneIndex = 1
 var currentIslandNode
-var sentence = ""
 var currentNode
 var spacing = 0.25
+var curcar
+var lastcar
 
 
 func selectAlpha(obj, selected):
@@ -64,12 +65,11 @@ func _ready():
 		get_node("/root/RootNode/Zone_Lettres/Plan").add_child(letter) 
 	switchMode()
 
-func start(sentence_):
+func start(sentence):
 	for child in placeholderplan.get_children():
-		child.queue_free()
+		child.free()
 	for child in get_node("/root/RootNode/answer").get_children():
 		child.queue_free()
-	sentence = sentence_
 	var iterator = 0
 	for letter in sentence:
 		if letter != " ":
@@ -81,11 +81,14 @@ func start(sentence_):
 			letterNode.visible = false
 			letterNode.get_node("CollisionShape").queue_free()
 		iterator+=1
+	curcar = 0
+	lastcar = 0
 	nextCar()
 
 func nextCar():
-	placeholderplan.get_child(0).queue_free()		
-	var letterNode = placeholderplan.get_child(1)
+	#placeholderplan.get_child(0).queue_free()		
+	var letterNode = placeholderplan.get_child(curcar)
+	print(letterNode.get_letter())
 	selectAlpha(letterNode,true)
 	letterNode.visible = true
 	currentNode = letterNode	
@@ -237,19 +240,17 @@ func _input(event):
 			if inLetterGame:
 				var obj = cameraRaycast.get_collider()
 				if cameraRaycast.is_colliding() && inplan(obj) && istheletter(obj) :
-					moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
-					if placeholderplan.get_child(1):
+					if curcar < placeholderplan.get_child_count()-1 :
+						moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
+						selectAlpha(placeholderplan.get_child(curcar), false)
+						curcar+=1
 						nextCar()
-					else:
-						if currentIslandSceneIndex <= 2:
-							inLetterGame = !inLetterGame
-							switchMode()
-							for L in get_node("Zone_Lettres/Plan").get_children():
-								L.set_difficulty(L.get_difficulty()+2)
-							changeSceneOrEndGame()
-						else:
-							wordListIndex=+1
-							switchMode(wordList[wordListIndex])
+					elif curcar == placeholderplan.get_child_count()-1:
+						moveObject(obj,currentNode.global_transform.origin,Vector3(-30,0,0))
+						selectAlpha(placeholderplan.get_child(curcar), false)
+						curcar+=1
+
+
 			else :
 				if !dialogBox.visible:
 					if cameraRaycast.is_colliding():
@@ -282,5 +283,13 @@ func _on_Movement_Tween_tween_all_completed():
 			get_node("Camera").set_enabled(true)
 			get_node("Camera/RayCast").enabled = true
 	else:
-		pass
-
+		if curcar == placeholderplan.get_child_count():
+			if currentIslandSceneIndex <= 2:
+				inLetterGame = !inLetterGame
+				switchMode()
+				for L in get_node("Zone_Lettres/Plan").get_children():
+					L.set_difficulty(L.get_difficulty()+2)
+				changeSceneOrEndGame()
+			else:
+				wordListIndex=+1
+				switchMode(wordList[wordListIndex])
