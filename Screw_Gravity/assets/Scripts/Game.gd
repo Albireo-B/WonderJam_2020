@@ -253,8 +253,17 @@ func fadeIn_IncrScene_ChangeEnv(newEnv):
 	allDialogueRead = false
 	
 func endGame(score):
-#	play cinematic and do smething with score ??? AND STOP SOUND ???
-	get_tree().quit()
+#	do something with score?
+	audioTween.interpolate_property(get_node("BackgroundAmbienSounds"),"volume_db",0,-30,2.0)
+	audioTween.start()
+	transitionScene.get_node("AnimationPlayer").play("Fade_in")
+	yield(transitionScene.get_node("AnimationPlayer"), "animation_finished")
+	get_node("EndCinematicVideo").visible = true
+	get_node("EndCinematicAudio").play()
+	get_node("EndCinematicVideo").play()
+	transitionScene.get_node("AnimationPlayer").play("Fade_out")
+
+
 	
 func _input(event):
 	if event is InputEventMouseButton:
@@ -327,3 +336,7 @@ func _on_Movement_Tween_tween_all_completed():
 func _on_Audio_Tween_tween_completed(object, key):
 	get_node("GhostBreath").stop()
 	get_node("GhostBreath").volume_db = 0
+
+
+func _on_EndCinematicVideo_finished():
+	get_tree().quit()
