@@ -207,6 +207,7 @@ func moveObject(object,targetLocation,rotationNeeded):
 		get_node("/root/RootNode/answer").add_child(newletter)
 		newletter.translation = oldpos
 		newletter.speed = 0
+		newletter.get_node("MeshInstance").get_node("outline").visible = false
 		newletter.get_node("CollisionShape").queue_free()
 		selectAlpha(newletter, false)
 		tween.interpolate_property(newletter,"translation",newletter.translation,
@@ -267,6 +268,9 @@ func _input(event):
 			else :
 				if !dialogBox.visible:
 					if cameraRaycast.is_colliding():
+						var N = cameraRaycast.get_collider()
+						for i in range (1,N.get_children().size()):
+							N.get_child(i).disabled = true
 						zoomInAndDialog(cameraRaycast.get_collider())
 						zoomed = true
 				else:
