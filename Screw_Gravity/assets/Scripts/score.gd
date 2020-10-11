@@ -15,4 +15,7 @@ func _process(delta):
 	
 	if rootNode.playtime:
 		score += 1
+		if score > rootNode.get_node("SaveSystem").highscore:
+			rootNode.get_node("SaveSystem").highscore = rootNode.get_node("ui/score").score
+			rootNode.get_node("SaveSystem").saveValue("scores", "score1")
 	text = str(score)
