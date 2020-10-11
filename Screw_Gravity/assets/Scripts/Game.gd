@@ -3,6 +3,7 @@ extends Spatial
 
 onready var transitionScene = get_node("SceneTransitionRect")
 onready var tween = get_node("Movement_Tween")
+onready var audioTween = get_node("Audio_Tween")
 onready var cameraRaycast = get_node("Camera/RayCast")
 onready var dialogBox = get_node("Dialog_Box")
 onready var letterScene = preload("res://assets/Scenes/letter.tscn")
@@ -70,7 +71,6 @@ func _ready():
 	switchMode()
 
 func start(sentence):
-	print(sentence)
 	for child in placeholderplan.get_children():
 		child.free()
 	for child in get_node("/root/RootNode/answer").get_children():
@@ -139,6 +139,9 @@ func zoomInAndDialog(targetObject):
 func zoomOutAndDialog():
 	dialogBox.visible = false
 	moveObject(get_node("Camera"),CAM_POS,CAM_ROT)
+	audioTween.interpolate_property(get_node("GhostBreath"),"volume_db",0,-30,2.0)
+	audioTween.start()
+	
 	
 func displayAccordingMessage():
 	match currentIslandSceneIndex:
@@ -250,7 +253,7 @@ func fadeIn_IncrScene_ChangeEnv(newEnv):
 	allDialogueRead = false
 	
 func endGame(score):
-#	play cinematic and do smething with score ???
+#	play cinematic and do smething with score ??? AND STOP SOUND ???
 	get_tree().quit()
 	
 func _input(event):
@@ -295,6 +298,7 @@ func _on_Movement_Tween_tween_all_completed():
 			displayAccordingMessage()	
 			dialogBox.get_node("Body_NinePatchRect/Body_MarginContainer/Body_Label/Body_AnimationPlayer").play("TextDisplay")
 			dialogBox.visible = true
+			get_node("GhostBreath").play()
 		elif allDialogueRead:
 			inLetterGame = !inLetterGame
 			get_node("Camera/Sprite3D").visible = true
@@ -320,7 +324,6 @@ func _on_Movement_Tween_tween_all_completed():
 				changeSceneOrEndGame()
 			else:
 				wordListIndex+=1
-				print(wordListIndex)
 				if wordListIndex/5 < 5:
 					for L in get_node("Zone_Lettres/Plan").get_children():
 						L.set_difficulty(wordListIndex/5)
@@ -329,3 +332,8 @@ func _on_Movement_Tween_tween_all_completed():
 						L.speed = 1.5 + wordListIndex * 0.01
 						L.invdiff = 500 - wordListIndex
 				switchMode(wordList[wordListIndex])
+
+
+func _on_Audio_Tween_tween_completed(object, key):
+	get_node("GhostBreath").stop()
+	get_node("GhostBreath").volume_db = 0
