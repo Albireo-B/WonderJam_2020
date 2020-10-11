@@ -5,6 +5,8 @@ extends KinematicBody
 export var speed = 1
 export var invisibility = false
 export var box = Vector3(6,2.5,2)
+export var difficulty = 0
+
 onready var originpos = global_transform.origin
 onready var randtarget = originpos
 #letter MUST BE SET WHIT THE SETTER (using setter getter is better)
@@ -41,7 +43,11 @@ func set_letter(letter_):
 func get_letter(): 
 	return letter
 	
+func get_difficulty():
+	return difficulty
+	
 func set_difficulty(number):
+	difficulty = number
 	match number:
 		0:
 			speed = 0.1

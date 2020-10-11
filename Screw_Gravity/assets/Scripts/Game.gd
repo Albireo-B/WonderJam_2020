@@ -55,7 +55,7 @@ func _ready():
 	var alpha = "a".to_ascii()
 	for i in range(0,26):
 		var letter = letterScene.instance()
-		letter.set_difficulty(4)
+		letter.set_difficulty(0)
 		var newalpha = alpha
 		newalpha[0] = alpha[0]+i
 		letter.set_letter(newalpha.get_string_from_ascii())
@@ -242,7 +242,10 @@ func _input(event):
 					if placeholderplan.get_child(1):
 						nextCar()
 					else:
+						inLetterGame = !inLetterGame
 						switchMode()
+						for L in get_node("Zone_Lettres/Plan").get_children():
+							L.set_difficulty(L.get_difficulty()+2)
 						changeSceneOrEndGame()
 			else :
 				if !dialogBox.visible:
