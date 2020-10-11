@@ -14,6 +14,7 @@ onready var placeholderplan = get_node("/root/RootNode/placeholder/Plan")
 const CAM_POS = Vector3(0,4,4.45)
 const CAM_ROT = Vector3(-10,0,0)
 
+var wordListIndex = 0
 var wordList = [
 	"it was" , "not meant" , "that we" , "should voyage" , "this far",
 "ultimate horror" , "often paralyses" , "memory in" , "a merciful way",
@@ -33,7 +34,7 @@ var level2DialogArrays = ["[color=#4ab3ff]The[/color] oldest and strongest emoti
 "I have seen the [color=#4ab3ff]Elders[/color] dancing"]
 var level3DialogArrays = ["[b]Don't ever stop ![/b]"]
 
-var levelsAnswer = ["a dead among men","fear the elders"]
+var levelsAnswer = ["a dead among men","fear the elders",wordList]
 
 var allDialogueRead = false
 var selectedLetter = null
@@ -240,11 +241,15 @@ func _input(event):
 					if placeholderplan.get_child(1):
 						nextCar()
 					else:
-						inLetterGame = !inLetterGame
-						switchMode()
-						for L in get_node("Zone_Lettres/Plan").get_children():
-							L.set_difficulty(L.get_difficulty()+2)
-						changeSceneOrEndGame()
+						if currentIslandSceneIndex <= 2:
+							inLetterGame = !inLetterGame
+							switchMode()
+							for L in get_node("Zone_Lettres/Plan").get_children():
+								L.set_difficulty(L.get_difficulty()+2)
+							changeSceneOrEndGame()
+						else:
+							wordListIndex=+1
+							switchMode(wordList[wordListIndex])
 			else :
 				if !dialogBox.visible:
 					if cameraRaycast.is_colliding():
@@ -268,7 +273,10 @@ func _on_Movement_Tween_tween_all_completed():
 			get_node("Camera/Sprite3D").visible = true
 			get_node("Camera").set_enabled(true)
 			get_node("Camera/RayCast").enabled = true
-			switchMode(levelsAnswer[currentIslandSceneIndex-1])
+			if currentIslandSceneIndex  <= 2:
+				switchMode(levelsAnswer[currentIslandSceneIndex-1])
+			else:
+				switchMode(wordList[wordListIndex])
 		else :
 			get_node("Camera/Sprite3D").visible = true
 			get_node("Camera").set_enabled(true)
