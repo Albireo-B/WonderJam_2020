@@ -56,23 +56,6 @@ func _process(delta):
 		else :
 			clearBodiesOutline()
 
-
-func _input(event):
-	if event is InputEvent:
-		if event.is_action_pressed("ui_cancel"):
-			changeSceneOrEndGame()
-	if event is InputEventMouseButton:
-		if event.pressed:
-			if inLetterGame:
-				if cameraRaycast.is_colliding() && !cameraRaycast.get_collider() in activatedLetterList :
-					activatedLetterList.append(cameraRaycast.get_collider())
-					moveObject(cameraRaycast.get_collider(),Vector3(xSpaceLetters,0,0),Vector3(-30,0,0))
-			else :
-				if !dialogBox.visible:
-					if cameraRaycast.is_colliding():
-						zoomInAndDialog(cameraRaycast.get_collider())
-				else:
-					zoomOutAndDialog()
 						
 func zoomInAndDialog(targetObject):
 	get_node("Camera").set_enabled(false)
@@ -126,8 +109,6 @@ func switchCollisions(objectsType,enabled):
 		for N in get_node("Zone_Lettres/Plan").get_children():
 			N.get_node("CollisionShape").disabled = !enabled
 			
-
-
 func clearAllLettersExceptSelectedOneOhGodWhatHaveIDone(letter):
 	for L in get_node("Zone_Lettres/Plan").get_children():
 		coloredMaterial = SpatialMaterial.new()
@@ -173,7 +154,24 @@ func fadeIn_IncrScene_ChangeEnv(newEnv):
 	
 func endGame():
 	get_tree().quit()
-
+	
+func _input(event):
+	if event is InputEvent:
+		if event.is_action_pressed("ui_cancel"):
+			changeSceneOrEndGame()
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if inLetterGame:
+				if cameraRaycast.is_colliding() && !cameraRaycast.get_collider() in activatedLetterList :
+					activatedLetterList.append(cameraRaycast.get_collider())
+					moveObject(cameraRaycast.get_collider(),Vector3(xSpaceLetters,0,0),Vector3(-30,0,0))
+			else :
+				if !dialogBox.visible:
+					if cameraRaycast.is_colliding():
+						zoomInAndDialog(cameraRaycast.get_collider())
+				else:
+					zoomOutAndDialog()
+					
 func _on_Movement_Tween_tween_all_completed():
 	if !inLetterGame:
 		if !dialogBox.visible:
